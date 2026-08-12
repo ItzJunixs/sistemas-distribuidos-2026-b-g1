@@ -5,10 +5,10 @@
 # Weekly Status - Week 01
 
 <!-- CONFIG-START - must match your profile repo (username/username) CONFIG -->
-- FULL_NAME:
-- GITHUB_USER:
-- TEAM:
-- SPRINT_GOAL:
+- FULL_NAME: Juan Diego Jiménez Horta
+- GITHUB_USER: ItzJunixs
+- TEAM: The illusionists
+- SPRINT_GOAL: Generation of firts documentacion(PDR) based in the intructions by the teacher
 <!-- CONFIG-END -->
 
 ## 1. User stories worked this week
@@ -17,13 +17,13 @@
 | HU-XXX-001 |  |  |  |
 
 ## 2. My individual contribution
--
+- I contributed to the patient portal by suggesting that the screen remain simple and mobile-first: prioritize the “active order” card with its progress bar at the very top, followed by the prescription (read-only), and, at the bottom, the two small blocks for the next appointment and outstanding balance. The idea was for a patient with no technical knowledge to understand the status of their glasses in seconds without having to navigate anywhere, consistent with the warmer tone and minimal complexity called for in the document for this view.
 
 ## 3. Blockers and risks
--
+- N/A
 
 ## 4. Plan for next week
--
+- Close the open questions with the stakeholder and convert each answer into an acceptance criterion.
 
 ## 5. Compliance self-check
 - [ ] Conventional Commits - `type(scope): summary`
