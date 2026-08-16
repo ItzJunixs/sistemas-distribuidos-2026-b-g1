@@ -21,6 +21,7 @@
 - For HU-03, I defined the requirements and acceptance criteria for consulting a patient's optical prescription history, including chronological ordering, relevant prescription information, and detailed visualization.
 - For HU-04, I defined the requirements for automatically detecting overdue periodic eye examinations, updating their status, displaying alerts on the dashboard, and generating a domain event for future notification processes.
 - I also contributed to defining the technical considerations for both user stories, such as the required API endpoint, database query optimization, scheduled tasks, and event-driven communication.
+- I contributed to the Git Flow activity by working with feature, development, QA, and main branches, using conventional commits, pull requests, and cherry-pick to integrate changes between branches.
 
 
 ## 3. Blockers and risks
@@ -39,3 +40,4 @@
 
 ## 6. Evidence links
 - https://github.com/orgs/TheIllusionists/projects/1/views/1
+- https://github.com/ItzJunixs/test-sistemas-distribuidos
