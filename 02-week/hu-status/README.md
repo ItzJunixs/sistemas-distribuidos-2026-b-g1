@@ -5,10 +5,10 @@
 # Weekly Status - Week 02
 
 <!-- CONFIG-START - must match your profile repo (username/username) CONFIG -->
-- FULL_NAME:
-- GITHUB_USER:
-- TEAM:
-- SPRINT_GOAL:
+- FULL_NAME: Juan Diego Jiménez Horta
+- GITHUB_USER: ItzJunixs
+- TEAM: The illusionists
+- SPRINT_GOAL: Create the initial project board, define the User Stories, and organize them according to priority, milestones, and story points.
 <!-- CONFIG-END -->
 
 ## 1. User stories worked this week
@@ -17,10 +17,14 @@
 | HU-XXX-001 |  |  |  |
 
 ## 2. My individual contribution
--
+- I contributed to the definition and documentation of User Stories HU-03 and HU-04 for the patient management microservice.
+- For HU-03, I defined the requirements and acceptance criteria for consulting a patient's optical prescription history, including chronological ordering, relevant prescription information, and detailed visualization.
+- For HU-04, I defined the requirements for automatically detecting overdue periodic eye examinations, updating their status, displaying alerts on the dashboard, and generating a domain event for future notification processes.
+- I also contributed to defining the technical considerations for both user stories, such as the required API endpoint, database query optimization, scheduled tasks, and event-driven communication.
+
 
 ## 3. Blockers and risks
--
+- N/A
 
 ## 4. Plan for next week
 -
