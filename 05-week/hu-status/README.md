@@ -13,10 +13,10 @@
 
 ## 1. User stories worked this week
 
-|| HU ID | Title | Status (todo/doing/done) | Evidence (PR or commit URL) |
-|---|---|---|---|---|
-|| HU-XXX-009 | Containerize services with Docker (multi-stage Dockerfile, .dockerignore, docker-compose.yml) | done | |
-|| HU-XXX-010 | Ship MVP 1: promote to main, tag v1.0.0, run release checklist/DoD, demo the running system, run retrospective | doing | |
+| HU ID | Title | Status (todo/doing/done) | Evidence (PR or commit URL) |
+|---|---|---|---|
+| HU-XXX-009 | Containerize services with Docker (multi-stage Dockerfile, .dockerignore, docker-compose.yml) | done | https://github.com/XimenaChala/sistemas-distribuidos-2026-b-g1 |
+| HU-XXX-010 | Ship MVP 1: promote to main, tag v1.0.0, run release checklist/DoD, demo the running system, run retrospective | done | https://github.com/XimenaChala/sistemas-distribuidos-2026-b-g1 |
 
 ## 2. My individual contribution
 
