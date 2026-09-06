@@ -1,0 +1,159 @@
+openapi: 3.0.3
+info:
+  title: eduTrack Communication Service API
+  version: 1.0.0
+  description: |
+    Microservice responsible for direct asynchronous communication between parents and teachers
+    regarding linked students and academic progress.
+
+servers:
+  - url: http://localhost:8085/api/v1
+    description: Direct service port (Local)
+  - url: http://localhost:8080/api/v1/communication
+    description: Via API Gateway
+
+paths:
+  /conversations:
+    get:
+      summary: List conversations for current authenticated user
+      tags: [Conversations]
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: List of conversations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ConversationResponse'
+
+    post:
+      summary: Start a new conversation between parent and teacher
+      tags: [Conversations]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [teacherId, studentId, subject, initialMessage]
+              properties:
+                teacherId:
+                  $ref: './_shared.yaml#/components/schemas/UUID'
+                studentId:
+                  $ref: './_shared.yaml#/components/schemas/UUID'
+                subject:
+                  type: string
+                initialMessage:
+                  type: string
+      responses:
+        '201':
+          description: Conversation started
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConversationResponse'
+
+  /conversations/{conversationId}/messages:
+    get:
+      summary: Get all messages in a conversation thread
+      tags: [Messages]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: conversationId
+          in: path
+          required: true
+          schema:
+            $ref: './_shared.yaml#/components/schemas/UUID'
+      responses:
+        '200':
+          description: Messages thread
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MessageResponse'
+
+    post:
+      summary: Send a message in an existing conversation
+      tags: [Messages]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: conversationId
+          in: path
+          required: true
+          schema:
+            $ref: './_shared.yaml#/components/schemas/UUID'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [content]
+              properties:
+                content:
+                  type: string
+      responses:
+        '201':
+          description: Message sent
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      $ref: './_shared.yaml#/components/securitySchemes/bearerAuth'
+
+  schemas:
+    ConversationResponse:
+      type: object
+      required: [id, parentId, teacherId, studentId, subject, status, createdAt]
+      properties:
+        id:
+          $ref: './_shared.yaml#/components/schemas/UUID'
+        parentId:
+          $ref: './_shared.yaml#/components/schemas/UUID'
+        teacherId:
+          $ref: './_shared.yaml#/components/schemas/UUID'
+        studentId:
+          $ref: './_shared.yaml#/components/schemas/UUID'
+        subject:
+          type: string
+        status:
+          type: string
+          enum: [OPEN, RESOLVED, CLOSED]
+        createdAt:
+          type: string
+          format: date-time
+
+    MessageResponse:
+      type: object
+      required: [id, conversationId, senderId, senderRole, content, createdAt]
+      properties:
+        id:
+          $ref: './_shared.yaml#/components/schemas/UUID'
+        conversationId:
+          $ref: './_shared.yaml#/components/schemas/UUID'
+        senderId:
+          $ref: './_shared.yaml#/components/schemas/UUID'
+        senderRole:
+          type: string
+          enum: [PARENT, TEACHER]
+        content:
+          type: string
+        readAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time

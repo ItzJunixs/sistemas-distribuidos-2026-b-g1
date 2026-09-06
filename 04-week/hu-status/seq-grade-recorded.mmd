@@ -1,0 +1,69 @@
+# Sequence Diagram — Grade Recording Flow (HU-001)
+
+> Complete distributed flow when registering a new academic grade (POST /api/v1/grades).
+> Source: ADR-001, ADR-002, ADR-004, PRD HU-001, sections 6, 7, 16, 17, 18.
+> Illustrates Transactional Outbox pattern, GradeCreated event publication, and parent notification dispatch.
+
+```mermaid
+sequenceDiagram
+    actor Parent as Parent / Guardian
+    actor Teacher as Teacher / Instructor
+    participant GW as API Gateway (:8080)
+    participant Auth as Identity Service (:8081)
+    participant Academic as Academic Service (:8082)
+    participant DB as academic_db (PostgreSQL)
+    participant Outbox as Outbox Relay Worker
+    participant Bus as RabbitMQ (edutrack.events)
+    participant Notif as Notifications Service (:8084)
+    participant Email as Email Provider (SendGrid)
+    participant Push as Push Provider (FCM)
+
+    Teacher->>GW: POST /api/v1/grades { studentId, subjectId, grade }
+    GW->>Auth: Validate JWT & extract claims (TEACHER role)
+    Auth-->>GW: JWT valid, teacherId, claims confirmed
+
+    GW->>Academic: POST /api/v1/grades (with auth claims)
+    Academic->>DB: BEGIN TRANSACTION
+
+    Academic->>DB: INSERT INTO grades (id, student_id, assignment_id, grade_value, teacher_id, graded_at)
+    DB-->>Academic: OK (Grade record persisted)
+
+    Academic->>DB: INSERT INTO outbox_events (event_id, event_type, routing_key, aggregate_id, payload)
+    DB-->>Academic: OK (Event persisted in outbox table)
+
+    Academic->>DB: COMMIT
+    DB-->>Academic: COMMIT OK
+
+    Academic-->>GW: 201 Created { gradeId, studentId, gradeValue, gradedAt }
+    GW-->>Teacher: 201 Created { gradeId, gradeValue, gradedAt }
+
+    par Asynchronous Outbox Processing
+        Outbox->>DB: Poll unpublished outbox events
+        DB-->>Outbox: GradeCreated { eventId, studentId, gradeValue, ... }
+        Outbox->>Bus: Publish GradeCreated to edutrack.events (routingKey: grade.created)
+        Outbox->>DB: UPDATE outbox_events SET published = TRUE WHERE event_id = :id
+
+        Note over Outbox,Bus: Transactional Outbox ensures zero message loss without dual-write hazards
+
+        Bus->>Notif: Consume GradeCreated event
+        Notif->>Notif: Verify idempotency log (event_id check)
+        Notif->>Push: POST /send { studentId, template: "new-grade", gradeValue }
+        Push-->>Notif: 200 OK (dispatched)
+
+        Notif->>Email: POST /send { to: parent@email.com, template: "new-grade", gradeValue }
+        Email-->>Notif: 200 OK (dispatched)
+
+        Notif->>DB: Record delivery status in notification_log
+        Notif-->>Bus: Acknowledge GradeCreated
+    end
+
+    Parent->>GW: GET /api/v1/students/{id}/grades
+    GW->>Academic: GET /api/v1/grades?studentId={id}
+    Academic->>DB: SELECT * FROM grades WHERE student_id = :id
+    DB-->>Academic: Grade records list
+    Academic-->>GW: 200 OK { grades: [...] }
+    GW-->>Parent: 200 OK { grades: [...] }
+
+    Note right of Parent: HU-001 AC1: Grade is available and queryable immediately after transaction commit
+    Note over Academic,Bus: HU-001 AC2: If Notifications fails, the grade remains securely registered and visible
+```

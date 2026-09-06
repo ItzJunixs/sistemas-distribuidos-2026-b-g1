@@ -15,8 +15,8 @@
 
 | HU ID | Title | Status (todo/doing/done) | Evidence (PR or commit URL) |
 |---|---|---|---|
-| HU-XXX-009 | Containerize services with Docker (multi-stage Dockerfile, .dockerignore, docker-compose.yml) | done | https://github.com/XimenaChala/sistemas-distribuidos-2026-b-g1 |
-| HU-XXX-010 | Ship MVP 1: promote to main, tag v1.0.0, run release checklist/DoD, demo the running system, run retrospective | done | https://github.com/XimenaChala/sistemas-distribuidos-2026-b-g1 |
+| HU-XXX-009 | Containerize services with Docker (multi-stage Dockerfile, .dockerignore, docker-compose.yml) | done | [docker-compose.yml](./docker-compose.yml), [Dockerfile.backend](./Dockerfile.backend), [Dockerfile.frontend](./Dockerfile.frontend), [docker-ps-evidence.txt](./docker-ps-evidence.txt) |
+| HU-XXX-010 | Ship MVP 1: promote to main, tag v1.0.0, run release checklist/DoD, demo the running system, run retrospective | done | [test-execution-results.txt](./test-execution-results.txt), [api-execution-evidence.json](./api-execution-evidence.json), [mvp-release-verification.md](./mvp-release-verification.md), [semana5.jpg](./semana5.jpg) |
 
 ## 2. My individual contribution
 
@@ -192,6 +192,22 @@ The release grade weighs more than "does it run": functionality/demo (does it me
 - Demoing slides instead of the running system.
 - No version tag / no CHANGELOG → the release isn't reproducible.
 - Skipping the retro → the same pain returns in Corte 2.
+
+## 8. Evidence files & links
+- Local Evidence Files:
+  - Unified Docker Compose: [`docker-compose.yml`](./docker-compose.yml)
+  - Backend Dockerfile: [`Dockerfile.backend`](./Dockerfile.backend)
+  - Frontend Dockerfile: [`Dockerfile.frontend`](./Dockerfile.frontend)
+  - Test Execution Results: [`test-execution-results.txt`](./test-execution-results.txt)
+  - Live Docker PS Output: [`docker-ps-evidence.txt`](./docker-ps-evidence.txt)
+  - Live API JSON Response: [`api-execution-evidence.json`](./api-execution-evidence.json)
+  - Release Verification & DoD: [`mvp-release-verification.md`](./mvp-release-verification.md)
+  - Week 5 Photo/Screenshot: [`semana5.jpg`](./semana5.jpg)
+- Remote Repositories:
+  - Frontend Repository (Port 3000): https://github.com/XimenaChala/edutrack-frontend
+  - Backend Repository (Port 8085): https://github.com/XimenaChala/edutrack
+  - Documentation Repository: https://github.com/XimenaChala/educk-docs
+  - Course Tracking Repository: https://github.com/XimenaChala/sistemas-distribuidos-2026-b-g1
 
 ## 9. Self-check answers (for personal review)
 

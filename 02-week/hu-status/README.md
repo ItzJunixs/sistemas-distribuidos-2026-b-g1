@@ -14,14 +14,15 @@
 ## 1. User stories worked this week
 | HU ID | Title | Status (todo/doing/done) | Evidence (PR or commit URL) |
 |---|---|---|---|
-| N/A | Sprint 1 setup (repo, branches, rulesets, labels, Project board) | done | |
+| N/A | Sprint 1 setup (repo, branches, rulesets, labels, Project board) | done | [ruleset-protect-develop-main.json](./ruleset-protect-develop-main.json), [git-branching-strategy.md](./git-branching-strategy.md) |
 
 ## 2. My individual contribution
 - Created the `edutrack` repository and configured `develop`, `qa`, `main` branches
-- Set up a GitHub ruleset protecting `develop`, `qa`, and `main` (PR required, 1 approval)
-- Created the 14 custom labels (hu-001–hu-005, module:*, type:*)
-- Built the GitHub Project board (Backlog, To Do, In Progress, In Review, Done) with Módulo and Historia fields
-- No individual HU assigned yet — team has not yet split ownership of HU-001 to HU-005 across the 3 members
+- Set up GitHub ruleset ID 22364620 protecting `develop`, `qa`, and `main` (PR required, 1 approval, linear history) -> see local evidence file `ruleset-protect-develop-main.json`
+- Defined Git branching conventions and quality gates -> see `git-branching-strategy.md`
+- Created the 14 custom labels (hu-001–hu-005, module:*, type:*) -> see `labels-setup.json`
+- Built the GitHub Project board (Backlog, To Do, In Progress, In Review, Done) with Módulo and Historia fields -> see `scrum-board-setup.md`
+- Prepared repository setup for team distribution across HU-001 to HU-005
 
 ## 3. Blockers and risks
 - Team has not yet confirmed who owns each HU / module among the 3 members
@@ -38,5 +39,12 @@
 - [ ] DDD / hexagonal boundaries respected (domain has no I/O)
 - [x] No secrets; config via environment variables
 
-## 6. Evidence links
-- Repo: https://github.com/XimenaChala/edutrack
+## 6. Evidence files & links
+- Local Evidence Files:
+  - Ruleset Configuration: [`ruleset-protect-develop-main.json`](./ruleset-protect-develop-main.json)
+  - Git Strategy: [`git-branching-strategy.md`](./git-branching-strategy.md)
+  - Scrum Board: [`scrum-board-setup.md`](./scrum-board-setup.md)
+  - Labels Setup: [`labels-setup.json`](./labels-setup.json)
+- Remote Repositories:
+  - Backend Repo: https://github.com/XimenaChala/edutrack
+  - Docs Repo: https://github.com/XimenaChala/educk-docs

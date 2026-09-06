@@ -1,0 +1,4 @@
+NAMES                    IMAGE                                STATUS          PORTS
+edutrack-frontend        edutrack-frontend-frontend-service   Up 23 minutes   0.0.0.0:3000->80/tcp, [::]:3000->80/tcp
+edutrack-communication   edutrack-communication-service       Up 25 minutes   0.0.0.0:8085->8085/tcp, [::]:8085->8085/tcp
+edutrack-postgres        postgres:16-alpine                   Up 55 minutes   0.0.0.0:5433->5432/tcp, [::]:5433->5432/tcp

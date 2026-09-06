@@ -1,0 +1,64 @@
+# Container Diagram — eduTrack Microservices
+
+> C4 Level 2 — Container view of the distributed system (MVP 1).
+> Source: 05-architecture/overview.md, ADR-002, ADR-003, ADR-004.
+> Each microservice runs in its own container, owns its PostgreSQL database, and communicates via REST APIs and RabbitMQ events.
+
+```mermaid
+C4Container
+    title Container Diagram — eduTrack Distributed Microservices (MVP 1)
+
+    Person(parent, "Parent / Guardian", "Uses web/mobile UI to view grades, attendance, and alerts")
+    Person(teacher, "Teacher", "Uses web portal to submit grades, attendance, and message parents")
+    Person(admin, "School Administrator", "Manages schools and user accounts")
+
+    System_Boundary(edutrack, "eduTrack Platform") {
+        Container(gateway, "API Gateway", "Spring Cloud Gateway / Reverse Proxy (:8080)", "Single entry point. JWT validation, route forwarding, CORS, and rate limiting.")
+
+        Container(identity, "identity-service", "Java 21 / Spring Boot 3 (:8081)", "User accounts, auth, parent-student linkages, school registration.")
+        ContainerDb(id_db, "identity_db", "PostgreSQL 16 (:5432)", "Users, parents, students, schools, parent-student links.")
+
+        Container(academic, "academic-service", "Java 21 / Spring Boot 3 (:8082)", "Subjects, assignments, grade submission. Publishes GradeCreated.")
+        ContainerDb(acad_db, "academic_db", "PostgreSQL 16 (:5432)", "Subjects, assignments, grades.")
+
+        Container(attendance, "attendance-service", "Java 21 / Spring Boot 3 (:8083)", "Attendance tracking, absence logging. Publishes StudentAbsent.")
+        ContainerDb(att_db, "attendance_db", "PostgreSQL 16 (:5432)", "Attendance events, session tracking.")
+
+        Container(notifications, "notifications-service", "Java 21 / Spring Boot 3 (:8084)", "Consumes domain events, deduplicates by eventId, delivers parent alerts.")
+        ContainerDb(notif_db, "notifications_db", "PostgreSQL 16 (:5432)", "Notification records, preferences, processed event log.")
+
+        Container(communication, "communication-service", "Java 21 / Spring Boot 3 (:8085)", "Parent-teacher messaging threads linked to subjects.")
+        ContainerDb(comm_db, "communication_db", "PostgreSQL 16 (:5432)", "Conversations, messages, read receipts.")
+
+        ContainerDb(redis, "Redis", "Redis 7 (:6379)", "Token cache, session tracking, rate limiting counters.")
+        ContainerDb(rabbitmq, "RabbitMQ Broker", "RabbitMQ 3.13 (:5672)", "Topic exchange (edutrack.events) for GradeCreated and StudentAbsent.")
+    }
+
+    System_Ext(email, "Email Service", "SMTP Provider", "Email notification dispatch")
+    System_Ext(push, "Push Provider", "FCM / Mobile Push", "Push notification dispatch")
+
+    Rel(parent, gateway, "Views dashboard & alerts", "HTTPS / REST")
+    Rel(teacher, gateway, "Registers grades & attendance", "HTTPS / REST")
+    Rel(admin, gateway, "Manages system records", "HTTPS / REST")
+
+    Rel(gateway, identity, "Proxies /api/v1/auth, /api/v1/users", "HTTP / REST")
+    Rel(gateway, academic, "Proxies /api/v1/academic", "HTTP / REST")
+    Rel(gateway, attendance, "Proxies /api/v1/attendance", "HTTP / REST")
+    Rel(gateway, notifications, "Proxies /api/v1/notifications", "HTTP / REST")
+    Rel(gateway, communication, "Proxies /api/v1/communication", "HTTP / REST")
+
+    Rel(identity, id_db, "Reads/writes identity data", "JDBC / SQL")
+    Rel(academic, acad_db, "Reads/writes academic records", "JDBC / SQL")
+    Rel(attendance, att_db, "Reads/writes attendance data", "JDBC / SQL")
+    Rel(notifications, notif_db, "Reads/writes notifications & logs", "JDBC / SQL")
+    Rel(communication, comm_db, "Reads/writes messages", "JDBC / SQL")
+
+    Rel(gateway, redis, "Rate limiting & token cache", "Redis Protocol")
+
+    Rel(academic, rabbitmq, "Publishes GradeCreated", "AMQP")
+    Rel(attendance, rabbitmq, "Publishes StudentAbsent", "AMQP")
+    Rel(rabbitmq, notifications, "Delivers domain events", "AMQP")
+
+    Rel(notifications, email, "Sends emails", "SMTP")
+    Rel(notifications, push, "Sends push alerts", "HTTPS")
+```

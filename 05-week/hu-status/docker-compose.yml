@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  postgres-db:
+    image: postgres:16-alpine
+    container_name: edutrack-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-communication_db}
+      POSTGRES_USER: ${POSTGRES_USER:-edutrack_admin}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-Secr3t_EduTrack_2026!}
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - edutrack-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-edutrack_admin} -d ${POSTGRES_DB:-communication_db}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  communication-service:
+    build:
+      context: ./edutrack
+      dockerfile: Dockerfile
+    image: edutrack-communication-service:latest
+    container_name: edutrack-communication
+    restart: unless-stopped
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      DB_HOST: postgres-db
+      DB_PORT: 5432
+      DB_NAME: ${POSTGRES_DB:-communication_db}
+      DB_USER: ${POSTGRES_USER:-edutrack_admin}
+      DB_PASSWORD: ${POSTGRES_PASSWORD:-Secr3t_EduTrack_2026!}
+      SERVER_PORT: 8085
+    ports:
+      - "8085:8085"
+    networks:
+      - edutrack-net
+
+  frontend-service:
+    build:
+      context: ./edutrack-frontend
+      dockerfile: Dockerfile
+    image: edutrack-frontend-service:latest
+    container_name: edutrack-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    networks:
+      - edutrack-net
+
+networks:
+  edutrack-net:
+    driver: bridge
+
+volumes:
+  pgdata:

@@ -1,0 +1,24 @@
+# System Context — EduTrack
+
+> C4 Level 1 — The system in relation to its external actors and external systems.
+> Source: ADR-001 (English Documentation), ADR-002 (Distributed Microservices), PRD sections 4, 5, and 14.
+
+```mermaid
+C4Context
+    title System Context — EduTrack Distributed Microservices Platform
+
+    Person(parent, "Parent / Guardian", "Inspects grades, attendance, and direct messages for linked children. Receives push and email alerts.")
+    Person(teacher, "Teacher / Instructor", "Records grades, tracks daily roll call, and responds to guardian inquiries.")
+    Person(admin, "School Administrator", "Manages school profiles, user provisioning, and role assignments.")
+
+    System_Ext(email, "Email Service Provider", "SendGrid / SMTP", "Dispatches transactional emails and notifications.")
+    System_Ext(push, "Push Notification Provider", "Firebase Cloud Messaging (FCM)", "Dispatches mobile alerts to guardians.")
+
+    System(edutrack, "EduTrack", "Distributed Microservices Platform\nJava 21 / Spring Boot 3 + PostgreSQL per service + RabbitMQ\nServices: Identity · Academic · Attendance · Notifications · Communication")
+
+    Rel(parent, edutrack, "Accesses dashboard and receives alerts", "HTTPS / REST")
+    Rel(teacher, edutrack, "Submits evaluations and logs attendance", "HTTPS / REST")
+    Rel(admin, edutrack, "Manages institutions and accounts", "HTTPS / REST")
+    Rel(edutrack, email, "Dispatches alert emails", "SMTP / REST")
+    Rel(edutrack, push, "Dispatches push alerts", "HTTPS / FCM")
+```

@@ -14,8 +14,8 @@
 ## 1. User stories worked this week
 | HU ID | Title | Status (todo/doing/done) | Evidence (PR or commit URL) |
 |---|---|---|---|
-| HU-XXX-007 | Specify OpenAPI contracts, event catalog, and data ownership matrix | done | https://github.com/XimenaChala/sistemas-distribuidos-2026-b-g1 |
-| HU-XXX-008 | Produce UML C4 architecture diagrams and Figma UX/UI design specifications | done | https://github.com/XimenaChala/sistemas-distribuidos-2026-b-g1 |
+| HU-XXX-007 | Specify OpenAPI contracts, event catalog, and data ownership matrix | done | [communication-service.yaml](./communication-service.yaml), [api-gateway.yaml](./api-gateway.yaml), [traceability-matrix.md](./traceability-matrix.md) |
+| HU-XXX-008 | Produce UML C4 architecture diagrams and Figma UX/UI design specifications | done | [c1-system-context.mmd](./c1-system-context.mmd), [c2-container-microservices.mmd](./c2-container-microservices.mmd), [seq-grade-recorded.mmd](./seq-grade-recorded.mmd), [user-stories.md](./user-stories.md) |
 
 ## 2. My individual contribution
 - Formulated User Stories `HU-001` to `HU-005` with testable Given-When-Then scenarios and constructed the complete Requirements Traceability Matrix (`04-requirements/traceability-matrix.md`).
@@ -47,7 +47,16 @@
 - [x] DDD / hexagonal boundaries respected (domain has no I/O)
 - [x] No secrets; config via environment variables
 
-## 6. Evidence links
-- Documentation Repository: https://github.com/XimenaChala/educk-docs
-- Interactive Figma Prototype: https://www.figma.com/proto/qp63u70WB8yFjlzbfZcLR9/EduTrack-Mockups-MVP-1
-- Course Tracking Repository: https://github.com/XimenaChala/sistemas-distribuidos-2026-b-g1
+## 6. Evidence files & links
+- Local Evidence Files:
+  - OpenAPI API Gateway: [`api-gateway.yaml`](./api-gateway.yaml)
+  - OpenAPI Communication Service: [`communication-service.yaml`](./communication-service.yaml)
+  - Traceability Matrix: [`traceability-matrix.md`](./traceability-matrix.md)
+  - User Stories Specification: [`user-stories.md`](./user-stories.md)
+  - C1 System Context Diagram: [`c1-system-context.mmd`](./c1-system-context.mmd)
+  - C2 Container Diagram: [`c2-container-microservices.mmd`](./c2-container-microservices.mmd)
+  - Grade Recorded Sequence Diagram: [`seq-grade-recorded.mmd`](./seq-grade-recorded.mmd)
+- Remote Repositories & Prototypes:
+  - Interactive Figma Prototype: https://www.figma.com/proto/qp63u70WB8yFjlzbfZcLR9/EduTrack-Mockups-MVP-1
+  - Documentation Repository: https://github.com/XimenaChala/educk-docs
+  - Course Tracking Repository: https://github.com/XimenaChala/sistemas-distribuidos-2026-b-g1

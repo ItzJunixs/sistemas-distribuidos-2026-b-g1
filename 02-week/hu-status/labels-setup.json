@@ -1,0 +1,16 @@
+[
+  {"name": "hu-001", "color": "0e8a16", "description": "Academic Records - View grades in near real time"},
+  {"name": "hu-002", "color": "0e8a16", "description": "Attendance - Real-time absence alerts without duplicates"},
+  {"name": "hu-003", "color": "fbca04", "description": "Identity - Multi-child academic progress tracking (Optional)"},
+  {"name": "hu-004", "color": "fbca04", "description": "Communication - Parent-teacher direct messaging"},
+  {"name": "hu-005", "color": "0e8a16", "description": "Communication - Direct messaging web interface & API"},
+  {"name": "module:identity", "color": "1d76db", "description": "Identity & Accounts microservice"},
+  {"name": "module:academic", "color": "1d76db", "description": "Academic Records microservice"},
+  {"name": "module:attendance", "color": "1d76db", "description": "Attendance microservice"},
+  {"name": "module:notifications", "color": "1d76db", "description": "Notifications microservice"},
+  {"name": "module:communication", "color": "1d76db", "description": "Communication microservice"},
+  {"name": "type:feature", "color": "a2eeef", "description": "New user-facing functionality"},
+  {"name": "type:bug", "color": "d73a4a", "description": "Defect or bug fix"},
+  {"name": "type:docs", "color": "0075ca", "description": "Documentation updates"},
+  {"name": "type:infra", "color": "c5def5", "description": "Docker, CI/CD, and DevOps configuration"}
+]

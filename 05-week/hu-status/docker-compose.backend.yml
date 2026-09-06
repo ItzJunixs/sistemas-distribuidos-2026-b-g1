@@ -1,0 +1,38 @@
+services:
+  postgres-db:
+    image: postgres:16-alpine
+    container_name: edutrack-postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-communication_db}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - edutrack-net
+
+  communication-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: edutrack-communication
+    environment:
+      PORT: ${PORT:-8085}
+      DB_URL: jdbc:postgresql://postgres-db:5432/${POSTGRES_DB:-communication_db}
+      DB_USERNAME: ${POSTGRES_USER:-postgres}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "8085:8085"
+    depends_on:
+      - postgres-db
+    networks:
+      - edutrack-net
+
+volumes:
+  postgres_data:
+
+networks:
+  edutrack-net:
+    driver: bridge

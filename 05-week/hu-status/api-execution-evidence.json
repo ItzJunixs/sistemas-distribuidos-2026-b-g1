@@ -1,0 +1,22 @@
+{
+  "request_payload": {
+    "content": "Evidence of running distributed system MVP for Sistemas Distribuidos 2026-B Corte 1.",
+    "receiverId": "d1952e42-78d1-4ad9-90ec-9a1bf07005c5",
+    "senderId": "c4974f76-1f6e-4e3a-97bb-43d995aa2bb3"
+  },
+  "postgres_host_port": "localhost:5433",
+  "response_status": 201,
+  "frontend_port": "localhost:3000",
+  "http_method": "POST",
+  "response_body": {
+    "senderId": "c4974f76-1f6e-4e3a-97bb-43d995aa2bb3",
+    "content": "Evidence of running distributed system MVP for Sistemas Distribuidos 2026-B Corte 1.",
+    "receiverId": "d1952e42-78d1-4ad9-90ec-9a1bf07005c5",
+    "subjectId": null,
+    "id": "9b3816c1-cc25-4d92-92c4-22d238f183ac",
+    "createdAt": "2026-09-06T02:06:40.906688722Z"
+  },
+  "backend_port": "localhost:8085",
+  "endpoint": "http://localhost:8085/api/v1/messages",
+  "verified_at": "2026-09-05T21:08:46Z"
+}

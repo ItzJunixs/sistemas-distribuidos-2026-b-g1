@@ -1,0 +1,26 @@
+===============================================================================
+EduTrack MVP 1 - Automated Test Execution Results
+===============================================================================
+Framework: JUnit 5 (Jupiter) + Spring Boot Test
+Service: Communication Service (Backend)
+Test Execution Timestamp: 2026-09-05 20:11:00 COT
+Status: BUILD SUCCESS (All tests passed)
+
+-------------------------------------------------------------------------------
+Test set: com.edutrack.communication.domain.MessageTest
+-------------------------------------------------------------------------------
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.014 s
+- testCreateValidMessage() ............................................ PASSED
+- testCreateMessageWithEmptyContentThrowsException() .................. PASSED
+- testCreateMessageWithNullSenderThrowsException() .................... PASSED
+
+-------------------------------------------------------------------------------
+Test set: com.edutrack.communication.application.SendMessageServiceTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.467 s
+- testSendMessageSuccessfullySavesAndDispatches() ..................... PASSED
+
+===============================================================================
+TOTAL: Tests run: 4, Failures: 0, Errors: 0, Skipped: 0
+BUILD SUCCESS
+===============================================================================
