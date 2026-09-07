@@ -4,7 +4,7 @@
 - **Backlog:** Prioritized candidate user stories and requirements.
 - **To Do:** Sprint-committed items ready for development.
 - **In Progress:** Actively being coded on a `feat/HU-XXX` branch.
-- **In Review:** Open Pull Request awaiting peer code review and approvals.
+- **In Review:** Open Pull Request awaiting CI checks and Professor evaluation (peer approval not required for Ximena Zambrano).
 - **Done:** Merged to `develop`, acceptance criteria satisfied, unit tests green.
 
 ## 2. Custom Project Fields

@@ -14,7 +14,7 @@
 ## 2. Definition of Done (DoD) Verification
 - [x] **Source Code & Branching:**
   - Feature branches: `feat/HU-005-comunicacion-padre-profesor` and `feat/HU-005-interfaz-comunicacion`.
-  - Merged into `develop`. Ruleset `protect-develop-main` active on GitHub (requires 1 review).
+  - Merged into `develop`. Ruleset `protect-develop-main` configured on GitHub (bypass enabled for Ximena Zambrano, automated/professor evaluation).
 - [x] **Zero Secrets:**
   - Database credentials managed via `.env` / `.env.example`.
   - GitGuardian automated security scan: PASSED (Green).

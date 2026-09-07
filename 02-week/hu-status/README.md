@@ -18,7 +18,7 @@
 
 ## 2. My individual contribution
 - Created the `edutrack` repository and configured `develop`, `qa`, `main` branches
-- Set up GitHub ruleset ID 22364620 protecting `develop`, `qa`, and `main` (PR required, 1 approval, linear history) -> see local evidence file `ruleset-protect-develop-main.json`
+- Set up GitHub ruleset ID 22364620 protecting `develop`, `qa`, and `main` (bypass enabled for Ximena Zambrano, 0 peer approvals required, evaluation by Professor/CI) -> see local evidence file `ruleset-protect-develop-main.json`
 - Defined Git branching conventions and quality gates -> see `git-branching-strategy.md`
 - Created the 14 custom labels (hu-001–hu-005, module:*, type:*) -> see `labels-setup.json`
 - Built the GitHub Project board (Backlog, To Do, In Progress, In Review, Done) with Módulo and Historia fields -> see `scrum-board-setup.md`
