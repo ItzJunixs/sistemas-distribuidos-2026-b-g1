@@ -1,32 +1,37 @@
 version: '3.8'
 
 services:
+  # Pattern: <abbr>-<domain>-<piece> -> educk-comm-db
   postgres-db:
     image: postgres:16-alpine
-    container_name: edutrack-postgres
+    container_name: educk-comm-db
     restart: unless-stopped
     environment:
-      POSTGRES_DB: ${POSTGRES_DB:-communication_db}
-      POSTGRES_USER: ${POSTGRES_USER:-edutrack_admin}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-Secr3t_EduTrack_2026!}
+      POSTGRES_DB: ${POSTGRES_DB:?POSTGRES_DB must be defined in .env}
+      POSTGRES_USER: ${POSTGRES_USER:?POSTGRES_USER must be defined in .env}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be defined in .env}
     ports:
       - "5433:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
     networks:
-      - edutrack-net
+      edutrack-net:
+        aliases:
+          - educk-comm-db
+          - postgres-db
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-edutrack_admin} -d ${POSTGRES_DB:-communication_db}"]
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
       interval: 5s
       timeout: 5s
       retries: 5
 
+  # Pattern: <abbr>-<domain>-<piece> -> educk-comm-api
   communication-service:
     build:
       context: ./edutrack
       dockerfile: Dockerfile
-    image: edutrack-communication-service:latest
-    container_name: edutrack-communication
+    image: educk-comm-api:latest
+    container_name: educk-comm-api
     restart: unless-stopped
     depends_on:
       postgres-db:
@@ -35,26 +40,33 @@ services:
       SPRING_PROFILES_ACTIVE: prod
       DB_HOST: postgres-db
       DB_PORT: 5432
-      DB_NAME: ${POSTGRES_DB:-communication_db}
-      DB_USER: ${POSTGRES_USER:-edutrack_admin}
-      DB_PASSWORD: ${POSTGRES_PASSWORD:-Secr3t_EduTrack_2026!}
+      DB_NAME: ${POSTGRES_DB:?POSTGRES_DB must be defined in .env}
+      DB_USER: ${POSTGRES_USER:?POSTGRES_USER must be defined in .env}
+      DB_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be defined in .env}
       SERVER_PORT: 8085
     ports:
       - "8085:8085"
     networks:
-      - edutrack-net
+      edutrack-net:
+        aliases:
+          - educk-comm-api
+          - communication-service
 
+  # Pattern: <abbr>-<domain>-<piece> -> educk-comm-portal
   frontend-service:
     build:
       context: ./edutrack-frontend
       dockerfile: Dockerfile
-    image: edutrack-frontend-service:latest
-    container_name: edutrack-frontend
+    image: educk-comm-portal:latest
+    container_name: educk-comm-portal
     restart: unless-stopped
     ports:
       - "3000:80"
     networks:
-      - edutrack-net
+      edutrack-net:
+        aliases:
+          - educk-comm-portal
+          - frontend-service
 
 networks:
   edutrack-net:

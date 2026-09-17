@@ -1,12 +1,18 @@
 # Git Branching Strategy & Workflow Specification
 
 ## 1. Branch Hierarchy
-- `main`: Production-ready releases. Protected by ruleset ID 22364620 (Bypass enabled for Ximena Zambrano / Repository Admin).
-- `qa`: Integration and quality assurance staging environment.
-- `develop`: Primary integration branch for ongoing sprint work. Default branch. Protected by ruleset ID 22364620 (Bypass enabled for Ximena Zambrano / Repository Admin).
-- `feat/HU-XXX-<slug>`: Feature branches branched from `develop` and merged via Pull Request or direct push by Ximena Zambrano without requiring peer reviews or approvals.
+- `main`: Production-ready releases. Protected by ruleset ID 22364620 (Requires CODEOWNERS review + evaluator approval `@ariel5253`; strictly 0 bypass actors).
+- `qa`: Integration and quality assurance staging environment. Fed only by child `qa/` branches.
+- `develop`: Primary integration branch for ongoing sprint work. Protected by ruleset ID 22364620 (Requires peer review; strictly 0 bypass actors).
+- `feat/HU-XXX-<slug>`: Feature branches branched from `develop` and merged strictly via Pull Request with passing CI checks and mandatory peer review.
 
-## 2. Commit Conventions (Conventional Commits)
+## 2. Promotion Model (Re-application via cherry-pick -x)
+In accordance with course governance (`00-governance/branching-policy.md`):
+- `merge develop -> qa` and `merge qa -> main` are strictly prohibited.
+- Promotion from `develop` to `qa` is done via dedicated child branches (`qa/HU-XXX-<slug>`) using `git cherry-pick -x <sha>` to preserve full commit provenance.
+- Promotion to `main` is performed via release branches (`release/vX.Y.Z`) requiring mandatory approval from `@ariel5253`.
+
+## 3. Commit Conventions (Conventional Commits)
 Format: `type(scope): imperative summary`
 - `feat`: New feature or user story implementation
 - `fix`: Bug fix
@@ -15,11 +21,10 @@ Format: `type(scope): imperative summary`
 - `refactor`: Code change that neither fixes a bug nor adds a feature
 - `chore`: Build tasks, package updates, configuration
 
-## 3. Pull Request & Quality Gates
-- Autonomous workflow for Ximena Zambrano:
-  1. No peer approvals required: Ximena Zambrano pushes and creates PRs autonomously without depending on peer reviews from other students (Celeste or Camilo Penagos).
-  2. Professor & Automation Evaluation: Final review, evaluation and merging into protected branches is handled exclusively by the Professor and automated GitHub Actions / bot checks.
-  3. Bypass list enabled: Repository admins / Ximena Zambrano have bypass privileges on required reviews.
-  4. Linear commit history (no merge conflicts).
-  5. Passing automated unit tests and CI checks.
-  6. Zero exposed secrets (GitGuardian verified).
+## 4. Pull Request & Quality Gates
+1. **Mandatory Approvals:** At least 1 approving peer/lead review required; direct push and author bypass are strictly disabled.
+2. **Conversation Resolution:** All review comment threads must be resolved before merge.
+3. **Stale Review Dismissal:** New commits automatically invalidate previous approvals.
+4. **Linear Commit History:** Fast-forward or rebase squash required (no non-fast-forward pushes).
+5. **Passing Automated Tests:** CI test pipelines must pass (100% green).
+6. **Zero Exposed Secrets:** Automated GitGuardian scan verification without default fallback credentials.
