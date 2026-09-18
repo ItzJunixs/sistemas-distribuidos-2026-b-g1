@@ -1,15 +1,15 @@
 ===============================================================================
-EduTrack MVP 1 - Automated Test Execution Results
+EduTrack MVP 1 - Automated Test Execution Results (Unit, Concurrency & Integration)
 ===============================================================================
-Framework: JUnit 5 (Jupiter) + Spring Boot Test
-Service: Communication Service (Backend)
-Test Execution Timestamp: 2026-09-05 20:11:00 COT
+Framework: JUnit 5 (Jupiter) + Spring Boot Test 3.3.3 + MockMvc
+Service: Communication Service (educk-comm-api / edutrack)
+Test Execution Timestamp: 2026-09-17 22:37:52 COT
 Status: BUILD SUCCESS (All tests passed)
 
 -------------------------------------------------------------------------------
 Test set: com.edutrack.communication.domain.MessageTest
 -------------------------------------------------------------------------------
-Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.014 s
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.009 s
 - testCreateValidMessage() ............................................ PASSED
 - testCreateMessageWithEmptyContentThrowsException() .................. PASSED
 - testCreateMessageWithNullSenderThrowsException() .................... PASSED
@@ -17,10 +17,23 @@ Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.014 s
 -------------------------------------------------------------------------------
 Test set: com.edutrack.communication.application.SendMessageServiceTest
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.467 s
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.163 s
 - testSendMessageSuccessfullySavesAndDispatches() ..................... PASSED
 
+-------------------------------------------------------------------------------
+Test set: com.edutrack.communication.application.ConcurrentMessageSubmissionTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.029 s
+- shouldHandleConcurrentMessageSubmissionsWithoutRaceConditions() ...... PASSED
+
+-------------------------------------------------------------------------------
+Test set: com.edutrack.communication.infrastructure.web.MessageControllerIntegrationTest
+-------------------------------------------------------------------------------
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.055 s
+- shouldCreateAndRetrieveMessage() [POST /api/v1/messages] ............ PASSED
+- healthCheckShouldReturnUp() [GET /api/v1/messages/health] ........... PASSED
+
 ===============================================================================
-TOTAL: Tests run: 4, Failures: 0, Errors: 0, Skipped: 0
-BUILD SUCCESS
+TOTAL: Tests run: 7, Failures: 0, Errors: 0, Skipped: 0
+BUILD SUCCESS (Total time: 9.296 s)
 ===============================================================================

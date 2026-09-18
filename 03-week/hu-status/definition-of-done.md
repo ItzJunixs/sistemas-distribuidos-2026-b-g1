@@ -7,7 +7,7 @@
 
 ### Code
 - [ ] Code implements all acceptance criteria of the user story
-- [ ] Code submitted via PR for automated checks and evaluation by the Professor (peer approval bypassed for Ximena Zambrano)
+- [ ] Code submitted via PR with at least 1 approving peer review and passing automated CI checks (strictly 0 author bypass)
 - [ ] Code follows project standards (linting and formatting pass in CI)
 - [ ] No technical debt introduced without registering it in [`15-project-control/technical-backlog.md`](../15-project-control/technical-backlog.md)
 

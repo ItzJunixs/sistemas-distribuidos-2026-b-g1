@@ -23,11 +23,11 @@ If there is code without an HU: possible gold-plating or bug introduced without 
 
 | FR ID | FR Description | HU(s) | Tests that verify it | Service | Status |
 |-------|---------------|-------|---------------------|---------|--------|
-| FR-001 | User authentication, account management, and parent-student linkages | HU-003 | `ParentStudentLinkTest.java` | `identity-service` | 🟡 In progress |
-| FR-002 | Subject/assignment management and grade submission with `GradeCreated` event | HU-001 | `GradeRegistrationTest.java` | `academic-service` | 🟡 In progress |
-| FR-003 | Class session attendance tracking, absence logging, and `StudentAbsent` event | HU-005 | `AttendanceCausalOrderTest.java` | `attendance-service` | 🟡 In progress |
-| FR-004 | Event consumption (`GradeCreated`, `StudentAbsent`), deduplication, and parent notifications | HU-001, HU-002 | `NotificationConsumerIdempotencyTest.java` | `notifications-service` | 🟡 In progress |
-| FR-005 | Direct parent-teacher messaging threads linked to subjects | HU-004 | `MessageThreadTest.java` | `communication-service` | 🟡 In progress |
+| FR-001 | User authentication, account management, and parent-student linkages | HU-003 | `ParentStudentLinkTest.java` | `identity-service` | 🟡 In progress (Cut 2) |
+| FR-002 | Subject/assignment management and grade submission with `GradeCreated` event | HU-001 | `GradeRegistrationTest.java` | `academic-service` | 🟡 In progress (Cut 2) |
+| FR-003 | Class session attendance tracking, absence logging, and `StudentAbsent` event | HU-002 | `AttendanceCausalOrderTest.java` | `attendance-service` | 🟡 In progress (Cut 2) |
+| FR-004 | Event consumption (`GradeCreated`, `StudentAbsent`), deduplication, and parent notifications | HU-001, HU-002 | `NotificationConsumerIdempotencyTest.java` | `notifications-service` | 🟡 In progress (Cut 2) |
+| FR-005 | Direct parent-teacher messaging threads linked to subjects | HU-005 | `MessageTest.java`, `SendMessageServiceTest.java`, `MessageControllerIntegrationTest.java`, `ConcurrentMessageSubmissionTest.java` | `communication-service` | 🟢 Delivered (Walking Skeleton Cut 1) |
 
 ---
 
