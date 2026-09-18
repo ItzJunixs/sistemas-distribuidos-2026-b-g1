@@ -109,12 +109,88 @@ paths:
               schema:
                 $ref: '#/components/schemas/MessageResponse'
 
+  /messages:
+    post:
+      summary: Send a direct message between two actors (Walking Skeleton v1)
+      tags: [Direct Messages]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendMessageRequest'
+      responses:
+        '201':
+          description: Message successfully created and persisted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DirectMessageResponse'
+
+  /messages/conversation:
+    get:
+      summary: Retrieve conversation thread between two users (Walking Skeleton v1)
+      tags: [Direct Messages]
+      parameters:
+        - name: user1
+          in: query
+          required: true
+          schema:
+            $ref: './_shared.yaml#/components/schemas/UUID'
+        - name: user2
+          in: query
+          required: true
+          schema:
+            $ref: './_shared.yaml#/components/schemas/UUID'
+      responses:
+        '200':
+          description: List of messages exchanged between the two users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DirectMessageResponse'
+
 components:
   securitySchemes:
     bearerAuth:
       $ref: './_shared.yaml#/components/securitySchemes/bearerAuth'
 
   schemas:
+    SendMessageRequest:
+      type: object
+      required: [senderId, receiverId, content]
+      properties:
+        senderId:
+          $ref: './_shared.yaml#/components/schemas/UUID'
+        receiverId:
+          $ref: './_shared.yaml#/components/schemas/UUID'
+        subjectId:
+          $ref: './_shared.yaml#/components/schemas/UUID'
+          nullable: true
+        content:
+          type: string
+
+    DirectMessageResponse:
+      type: object
+      required: [id, senderId, receiverId, content, createdAt]
+      properties:
+        id:
+          $ref: './_shared.yaml#/components/schemas/UUID'
+        senderId:
+          $ref: './_shared.yaml#/components/schemas/UUID'
+        receiverId:
+          $ref: './_shared.yaml#/components/schemas/UUID'
+        subjectId:
+          $ref: './_shared.yaml#/components/schemas/UUID'
+          nullable: true
+        content:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+
     ConversationResponse:
       type: object
       required: [id, parentId, teacherId, studentId, subject, status, createdAt]

@@ -1,34 +1,52 @@
 services:
+  # Pattern: <abbr>-<domain>-<piece> -> educk-comm-db
   postgres-db:
     image: postgres:16-alpine
-    container_name: edutrack-postgres
+    container_name: educk-comm-db
     environment:
-      POSTGRES_DB: ${POSTGRES_DB:-communication_db}
-      POSTGRES_USER: ${POSTGRES_USER:-postgres}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB:?POSTGRES_DB must be defined in .env}
+      POSTGRES_USER: ${POSTGRES_USER:?POSTGRES_USER must be defined in .env}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be defined in .env}
     ports:
       - "5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
-      - edutrack-net
+      edutrack-net:
+        aliases:
+          - educk-comm-db
+          - postgres-db
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
+  # Pattern: <abbr>-<domain>-<piece> -> educk-comm-api
   communication-service:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: edutrack-communication
+    image: educk-comm-api:latest
+    container_name: educk-comm-api
     environment:
-      PORT: ${PORT:-8085}
-      DB_URL: jdbc:postgresql://postgres-db:5432/${POSTGRES_DB:-communication_db}
-      DB_USERNAME: ${POSTGRES_USER:-postgres}
-      DB_PASSWORD: ${POSTGRES_PASSWORD}
+      PORT: 8085
+      DB_HOST: postgres-db
+      DB_PORT: 5432
+      DB_NAME: ${POSTGRES_DB:?POSTGRES_DB must be defined in .env}
+      DB_USER: ${POSTGRES_USER:?POSTGRES_USER must be defined in .env}
+      DB_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be defined in .env}
+      SERVER_PORT: 8085
     ports:
       - "8085:8085"
     depends_on:
-      - postgres-db
+      postgres-db:
+        condition: service_healthy
     networks:
-      - edutrack-net
+      edutrack-net:
+        aliases:
+          - educk-comm-api
+          - communication-service
 
 volumes:
   postgres_data:

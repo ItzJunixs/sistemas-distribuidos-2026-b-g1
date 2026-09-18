@@ -1,16 +1,16 @@
 # Git Branching Strategy & Workflow Specification
 
 ## 1. Branch Hierarchy
-- `main`: Production-ready releases. Protected by ruleset ID 22364620 (Requires CODEOWNERS review + evaluator approval `@ariel5253`; strictly 0 bypass actors).
+- `main`: Production-ready releases. Protected by ruleset ID 22364620 (Requires passing CI checks and formal release sign-off by Course Evaluator/Teaching Team; strictly 0 author bypass actors).
 - `qa`: Integration and quality assurance staging environment. Fed only by child `qa/` branches.
-- `develop`: Primary integration branch for ongoing sprint work. Protected by ruleset ID 22364620 (Requires peer review; strictly 0 bypass actors).
+- `develop`: Primary integration branch for ongoing sprint work. Protected by ruleset ID 22364620 (Requires 1 mandatory approving peer review from Team G1 members; strictly 0 bypass actors).
 - `feat/HU-XXX-<slug>`: Feature branches branched from `develop` and merged strictly via Pull Request with passing CI checks and mandatory peer review.
 
 ## 2. Promotion Model (Re-application via cherry-pick -x)
 In accordance with course governance (`00-governance/branching-policy.md`):
 - `merge develop -> qa` and `merge qa -> main` are strictly prohibited.
 - Promotion from `develop` to `qa` is done via dedicated child branches (`qa/HU-XXX-<slug>`) using `git cherry-pick -x <sha>` to preserve full commit provenance.
-- Promotion to `main` is performed via release branches (`release/vX.Y.Z`) requiring mandatory approval from `@ariel5253`.
+- Promotion to `main` is performed via release branches (`release/vX.Y.Z`) requiring mandatory evaluation sign-off.
 
 ## 3. Commit Conventions (Conventional Commits)
 Format: `type(scope): imperative summary`

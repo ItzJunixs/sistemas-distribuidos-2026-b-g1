@@ -11,12 +11,12 @@
   - Endpoints exposed: `POST /api/v1/messages` (validation, persistence, and audit logging).
 - **Database Engine (`educk-comm-db`):** Container running PostgreSQL 16 Alpine on internal port 5432 / host port 5433.
   - Dedicated database `communication_db`, schema user `edutrack_admin`.
-  - Schema Ownership & Flyway: Follows ADR-003 (Database per Service). Migrations reside in the backend repository at `src/main/resources/db/migration/` and execute on startup to ensure repeatable walking skeleton deployments.
+  - **Schema Ownership (Course Standard `<abbr>-<domain>-db`):** Adheres strictly to ADR-003 (Database per Service) and course governance: schema DDL definitions and versioned migrations belong authoritatively to the database repository `educk-comm-db` (isolated from the API artifact `educk-comm-api`). For the local walking skeleton, initialization DDL scripts are mounted directly into PostgreSQL container startup (`/docker-entrypoint-initdb.d/`), decoupling schema control from the Spring Boot JAR.
 
 ## 2. Multi-Repository Architecture Clarification
-> **Note on Repository Separation:**  
-> - `code-corhuila/sistemas-distribuidos-2026-b-g1`: Acts exclusively as the **academic coursework tracking repository** (evidence, weekly logs, rulesets, compose wrappers).  
-> - Application source code, domain models, and JUnit suites reside in dedicated service repositories (`edutrack` and `edutrack-frontend`).
+> **Note on Multi-Repository Strategy (Polyrepo):**  
+> - `code-corhuila/sistemas-distribuidos-2026-b-g1`: Acts as the **coursework portfolio & tracking umbrella** (weekly logs, rulesets, evidence snapshots, docker-compose wrappers).  
+> - Application source code, hexagonal domain models, JUnit 5 test suites, and frontend components live in dedicated repositories ([`XimenaChala/edutrack`](https://github.com/XimenaChala/edutrack) and [`XimenaChala/edutrack-frontend`](https://github.com/XimenaChala/edutrack-frontend)) to ensure decoupled CI/CD pipelines, independent versioning, and zero cross-service contamination.
 
 ## 3. Definition of Done (DoD) Verification
 - [x] **Source Code & Branching:**
