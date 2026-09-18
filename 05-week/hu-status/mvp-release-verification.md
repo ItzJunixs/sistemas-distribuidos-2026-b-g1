@@ -2,21 +2,22 @@
 
 ## 1. System Architecture & Components (Standard: `<abbr>-<domain>-<piece>`)
 - **Frontend Portal (`educk-comm-portal`):** Container running Nginx Alpine serving Vite web application on port 3000.
-  - Repository: [`XimenaChala/edutrack-frontend`](https://github.com/XimenaChala/edutrack-frontend) (Branch: `feat/HU-005-interfaz-comunicacion`).
+  - Repository: [`code-corhuila/educk-communication-portal`](https://github.com/code-corhuila/educk-communication-portal) (Branch: `feat/HU-005-interfaz-comunicacion`).
   - Implements Figma design system (Deep Navy `#0f172a`, Royal Blue `#3b82f6`, Inter font).
   - Connects dynamically to backend API at `http://localhost:8085/api/v1/messages`.
 - **Backend Service API (`educk-comm-api`):** Container running Java 21 LTS + Spring Boot 3.3.3 on port 8085.
-  - Repository: [`XimenaChala/edutrack`](https://github.com/XimenaChala/edutrack) (Branch: `feat/HU-005-comunicacion-padre-profesor`).
+  - Repository: [`code-corhuila/edutrack`](https://github.com/code-corhuila/edutrack) (Branches: `feat/HU-005-comunicacion-padre-profesor`, `develop`, `qa`).
   - Hexagonal architecture (Domain, Application, Infrastructure).
   - Endpoints exposed: `POST /api/v1/messages` (validation, persistence, and audit logging).
 - **Database Engine (`educk-comm-db`):** Container running PostgreSQL 16 Alpine on internal port 5432 / host port 5433.
   - Dedicated database `communication_db`, schema user `edutrack_admin`.
-  - **Schema Ownership (Course Standard `<abbr>-<domain>-db`):** Adheres strictly to ADR-003 (Database per Service) and course governance: schema DDL definitions and versioned migrations belong authoritatively to the database repository `educk-comm-db` (isolated from the API artifact `educk-comm-api`). For the local walking skeleton, initialization DDL scripts are mounted directly into PostgreSQL container startup (`/docker-entrypoint-initdb.d/`), decoupling schema control from the Spring Boot JAR.
+  - Repository: [`code-corhuila/educk-communication-db`](https://github.com/code-corhuila/educk-communication-db) (Branch: `feat/HU-005-esquema-mensajes`).
+  - **Schema Ownership (Course Standard `<abbr>-<domain>-db`):** Adheres strictly to ADR-003 (Database per Service) and course governance: schema DDL definitions and versioned migrations belong authoritatively to the database repository `educk-comm-db` (isolated from the API artifact `educk-comm-api`). For the local walking skeleton, initialization DDL scripts (`migrations/V1__create_messages_table.sql`) are mounted directly into PostgreSQL container startup (`/docker-entrypoint-initdb.d/`), decoupling schema control from the Spring Boot JAR.
 
 ## 2. Multi-Repository Architecture Clarification
 > **Note on Multi-Repository Strategy (Polyrepo):**  
 > - `code-corhuila/sistemas-distribuidos-2026-b-g1`: Acts as the **coursework portfolio & tracking umbrella** (weekly logs, rulesets, evidence snapshots, docker-compose wrappers).  
-> - Application source code, hexagonal domain models, JUnit 5 test suites, and frontend components live in dedicated repositories ([`XimenaChala/edutrack`](https://github.com/XimenaChala/edutrack) and [`XimenaChala/edutrack-frontend`](https://github.com/XimenaChala/edutrack-frontend)) to ensure decoupled CI/CD pipelines, independent versioning, and zero cross-service contamination.
+> - Application source code, hexagonal domain models, JUnit 5 test suites, and frontend components live in dedicated repositories within the official organization ([`code-corhuila/edutrack`](https://github.com/code-corhuila/edutrack), [`code-corhuila/educk-communication-portal`](https://github.com/code-corhuila/educk-communication-portal), and [`code-corhuila/educk-communication-db`](https://github.com/code-corhuila/educk-communication-db)) to ensure decoupled CI/CD pipelines, independent versioning, and zero cross-service contamination.
 
 ## 3. Definition of Done (DoD) Verification
 - [x] **Source Code & Branching:**

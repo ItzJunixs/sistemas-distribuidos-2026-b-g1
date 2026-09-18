@@ -15,7 +15,7 @@
 
 | HU ID | Title | Status (todo/doing/done) | Evidence (PR or commit URL) |
 |---|---|---|---|
-| HU-005 | Parent-Teacher Communication Service Backend API & Frontend UI | done | Backend: [`XimenaChala/edutrack`](https://github.com/XimenaChala/edutrack/tree/feat/HU-005-comunicacion-padre-profesor) · Frontend: [`XimenaChala/edutrack-frontend`](https://github.com/XimenaChala/edutrack-frontend/tree/feat/HU-005-interfaz-comunicacion) |
+| HU-005 | Parent-Teacher Communication Service Backend API & Frontend UI | done | Backend: [`code-corhuila/edutrack`](https://github.com/code-corhuila/edutrack/tree/feat/HU-005-comunicacion-padre-profesor) · Frontend: [`code-corhuila/educk-communication-portal`](https://github.com/code-corhuila/educk-communication-portal/tree/feat/HU-005-interfaz-comunicacion) · DB: [`code-corhuila/educk-communication-db`](https://github.com/code-corhuila/educk-communication-db/tree/feat/HU-005-esquema-mensajes) |
 | HU-XXX-009 | Containerize services with Docker (multi-stage Dockerfile, .dockerignore, docker-compose.yml) | done | [docker-compose.yml](./docker-compose.yml), [Dockerfile.backend](./Dockerfile.backend), [Dockerfile.frontend](./Dockerfile.frontend), [docker-ps-evidence.txt](./docker-ps-evidence.txt) |
 | HU-XXX-010 | Ship MVP 1: promote to main, tag v1.0.0, run release checklist/DoD, demo the running system, run retrospective | done | [test-execution-results.txt](./test-execution-results.txt), [api-execution-evidence.json](./api-execution-evidence.json), [mvp-release-verification.md](./mvp-release-verification.md), [semana5.jpg](./semana5.jpg) |
 
@@ -204,11 +204,12 @@ The release grade weighs more than "does it run": functionality/demo (does it me
   - Live API JSON Response: [`api-execution-evidence.json`](./api-execution-evidence.json)
   - Release Verification & DoD: [`mvp-release-verification.md`](./mvp-release-verification.md)
   - Week 5 Photo/Screenshot: [`semana5.jpg`](./semana5.jpg)
-- Remote Repositories:
-  - Frontend Repository (Port 3000): https://github.com/XimenaChala/edutrack-frontend
-  - Backend Repository (Port 8085): https://github.com/XimenaChala/edutrack
-  - Documentation Repository: https://github.com/XimenaChala/educk-docs
-  - Course Tracking Repository: https://github.com/XimenaChala/sistemas-distribuidos-2026-b-g1
+- Remote Repositories (Official `code-corhuila` Organization):
+  - Frontend Portal (Port 3000): https://github.com/code-corhuila/educk-communication-portal
+  - Backend API (Port 8085): https://github.com/code-corhuila/edutrack
+  - Database Schema & Migrations: https://github.com/code-corhuila/educk-communication-db
+  - Documentation Repository: https://github.com/code-corhuila/educk-docs
+  - Course Tracking Repository: https://github.com/code-corhuila/sistemas-distribuidos-2026-b-g1
 
 ## 9. Self-check answers (for personal review)
 

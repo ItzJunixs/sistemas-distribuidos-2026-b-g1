@@ -46,5 +46,5 @@
   - Scrum Board: [`scrum-board-setup.md`](./scrum-board-setup.md)
   - Labels Setup: [`labels-setup.json`](./labels-setup.json)
 - Remote Repositories:
-  - Backend Repo: https://github.com/XimenaChala/edutrack
-  - Docs Repo: https://github.com/XimenaChala/educk-docs
+  - Backend Repo: https://github.com/code-corhuila/edutrack
+  - Docs Repo: https://github.com/code-corhuila/educk-docs
