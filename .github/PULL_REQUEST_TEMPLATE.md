@@ -1,31 +1,31 @@
 ## Pull Request — Team G1 (EduTrack / educk)
 
-> **Regla de oro del curso:** Todo PR debe tener un diff menor a **400 líneas**, respetar la convención `<abbr>-<domain>-<piece>` y tener pruebas verdes.
+> **Golden Rule:** Every PR must have a diff under **400 lines**, strictly follow `<abbr>-<domain>-<piece>`, and have passing automated tests.
 
-### 1. Información General
-- **Historia de Usuario / Tarea:** HU-___
-- **Tipo de Cambio:**
-  - [ ] `feat`: Nueva funcionalidad
-  - [ ] `fix`: Corrección de error / bugfix
-  - [ ] `test`: Nuevas pruebas unitarias o de integración
-  - [ ] `refactor`: Refactorización de código sin cambio de comportamiento
-  - [ ] `docs`: Actualización de documentación o contratos
-  - [ ] `chore`: Configuración, Docker, dependencias
+### 1. General Information
+- **User Story / Task:** HU-___
+- **Type of Change:**
+  - [ ] `feat`: New feature or capability
+  - [ ] `fix`: Bug fix
+  - [ ] `test`: New or updated unit/integration tests
+  - [ ] `refactor`: Code refactoring without behavioral change
+  - [ ] `docs`: Documentation or contract updates
+  - [ ] `chore`: Build, tooling, Docker, dependencies
 
-### 2. Resumen del Cambio
-<!-- Explica brevemente qué hiciste y por qué -->
+### 2. Summary of Changes
+<!-- Briefly explain what was implemented and why (technical rationale) -->
 
 ---
 
-### 3. Lista de Verificación Obligatoria (Quality Gates)
-*Marca cada casilla con [x]. Todos los puntos son obligatorios para que tu PR sea aprobado:*
+### 3. Mandatory Quality Gates
+*Mark each checkbox with [x]. All items are mandatory for PR approval:*
 
-- [ ] **Límite de Tamaño:** El diff del PR es estrictamente menor a **400 líneas de código**.
-- [ ] **Ramas Correctas:** El PR viene de una rama hija (`feat/HU-XXX-...`, `fix/...`, `docs/...`) hacia `develop`. (Prohibido hacer push directo).
-- [ ] **Conventional Commits:** Todos los mensajes de commit están en inglés y siguen el formato `type(scope): description`.
-- [ ] **Cero Secretos:** No se subieron contraseñas, tokens ni archivos `.env` con credenciales reales.
-- [ ] **Pruebas Automatizadas:** El código compila y las pruebas unitarias pasan 100% en verde (`mvn test` / `npm test`).
-- [ ] **Arquitectura Hexagonal (Backend):** La capa `domain/` es Java puro (cero `import` de Spring, JPA o SQL).
-- [ ] **Soberanía de Base de Datos (ADR-003):** Ningún script DDL ni migración está dentro del backend. Cero claves foráneas físicas cross-database.
-- [ ] **Docker & Nombres:** Contenedores usan `<abbr>-<domain>-<piece>` y la API espera salud real (`condition: service_healthy` con `pg_isready`).
-- [ ] **Documentación en Inglés (ADR-001):** Comentarios, nombres y documentación técnica están en inglés.
+- [ ] **Size Cap:** PR diff is strictly under **400 lines of code**.
+- [ ] **Branching Policy:** PR originates from a child branch (`feat/HU-XXX-...`, `fix/...`, `docs/...`) targeting `develop` (or `main` in single-main documentation repos). Direct pushes to permanent branches are strictly prohibited.
+- [ ] **Conventional Commits:** All commit messages are in English and strictly follow `type(scope): summary` with mandatory `Why:` body rationale.
+- [ ] **Zero Secrets:** No passwords, tokens, API keys, or live `.env` credentials are committed.
+- [ ] **Automated Tests:** Code compiles cleanly and unit/integration tests pass with 0 failures (`mvn test` / `npm test`).
+- [ ] **Hexagonal Architecture (Backend):** The `domain/` layer is pure Java (zero frameworks, zero SQL/JPA imports).
+- [ ] **Database Sovereignty (ADR-003):** Schema migrations are owned exclusively in dedicated `-db` repositories. No physical cross-database foreign keys.
+- [ ] **Component Naming:** Container names and repositories adhere to `<abbr>-<domain>-<piece>`. Health checks use genuine readiness signals (`condition: service_healthy` via `pg_isready`).
+- [ ] **English Standard (ADR-001):** Code symbols, comments, commit messages, and technical documentation are 100% in English.

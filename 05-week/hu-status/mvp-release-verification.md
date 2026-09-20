@@ -5,9 +5,9 @@
   - Repository: [`code-corhuila/educk-communication-portal`](https://github.com/code-corhuila/educk-communication-portal) (Branch: `feat/HU-005-interfaz-comunicacion`).
   - Implements Figma design system (Deep Navy `#0f172a`, Royal Blue `#3b82f6`, Inter font).
   - Connects dynamically to backend API at `http://localhost:8085/api/v1/messages`.
-- **Backend Service API (`educk-comm-api`):** Container running Java 21 LTS + Spring Boot 3.3.3 on port 8085.
+- **Backend Service API (`educk-communication-api`):** Container running Java 21 LTS + Spring Boot 3.3.3 on port 8085.
   - Repository: [`code-corhuila/edutrack`](https://github.com/code-corhuila/edutrack) (Branches: `feat/HU-005-comunicacion-padre-profesor`, `develop`, `qa`).
-  - *Domain Scoping & Boundary Justification:* Seeded by the university under the project root name `edutrack` as the initial MVP 1 Walking Skeleton container. Internally, source code is strictly scoped to the communication bounded context (`com.edutrack.communication.*`), housing zero academic or attendance logic, ensuring single-domain isolation and strict adherence to ADR-003.
+  - **Component Naming Harmonization (`<abbr>-<domain>-<piece>`):** The canonical component name is `educk-communication-api` (standardized across Docker container names and `09-microservices/service-catalog.md`). The university base template repository `edutrack` serves as the implementation host for this component (`edutrack == educk-communication-api`). Internally, source code is strictly scoped to the communication bounded context (`com.edutrack.communication.*`), housing zero academic or attendance logic, ensuring single-domain isolation and strict adherence to ADR-003.
   - Hexagonal architecture (Domain, Application, Infrastructure).
   - Endpoints exposed: `POST /api/v1/messages` and `GET /api/v1/messages/conversation`.
 - **Database Engine (`educk-comm-db`):** Container running PostgreSQL 16 Alpine on internal port 5432 / host port 5433.
