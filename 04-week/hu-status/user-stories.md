@@ -8,11 +8,11 @@
 
 | Cut | Sprint | Total HUs | Delivered Walking Skeleton (Cut 1) | Progressive Scope (Next Cuts) | Status |
 |-----|--------|-----------|-----------------------------------|-------------------------------|--------|
-| **Cut 1** | **MVP 1 / Sprint 1** | 5 | **HU-005** (Parent-Teacher Communication) | **HU-001** (Grades), **HU-002** (Absence Alerts), **HU-003** (Multi-child), **HU-004** | **Cut 1 Delivered** (HU-005 Walking Skeleton implemented & verified) |
+| **Cut 1** | **MVP 1 / Sprint 1** | 5 | **HU-004** (Parent-Teacher Communication) | **HU-001** (Grades), **HU-002** (Absence Alerts), **HU-003** (Multi-child), **HU-005** | **Cut 1 Delivered** (HU-004 Walking Skeleton implemented & verified) |
 
 > **Note on Backlog Prioritization:**  
-> - **Cut 1 Delivered Walking Skeleton:** `HU-005` (Parent-Teacher direct messaging with hexagonal architecture, integration/concurrency tests, dedicated DB, and web portal).  
-> - **Progressive Scope (Next Cuts):** `HU-001` (Grade publishing in academic service), `HU-002` (Absence alerts in attendance service), `HU-003` (Identity and parent-student linkages), and `HU-004`.  
+> - **Cut 1 Delivered Walking Skeleton:** `HU-004` (Parent-Teacher direct messaging with hexagonal architecture, integration/concurrency tests, dedicated DB, and web portal).  
+> - **Progressive Scope (Next Cuts):** `HU-001` (Grade publishing in academic service), `HU-002` (Absence alerts in attendance service), `HU-003` (Identity and parent-student linkages), and `HU-005`.  
 
 ---
 

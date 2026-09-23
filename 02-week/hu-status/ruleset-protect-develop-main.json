@@ -8,6 +8,7 @@
     "ref_name": {
       "include": [
         "refs/heads/develop",
+        "refs/heads/qa",
         "refs/heads/main"
       ],
       "exclude": []
