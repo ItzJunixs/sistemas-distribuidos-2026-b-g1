@@ -130,3 +130,13 @@ In distributed systems, eventual consistency and network unreliability demand th
 * Each client request carries an `Idempotency-Key` header.
 * The database enforces a partial unique index `(sender_id, idempotency_key)` preventing duplicate inserts upon network timeouts and retries.
 * Relational check constraints (`sender_id <> receiver_id`) enforce core domain invariants directly at the persistence tier as defense-in-depth.
+
+### 4. Multi-Container Orchestration with Docker Compose (Session 1)
+* **Single Network Fabric:** Declare all bounded context services and infrastructure components on a shared private bridge network (`edutrack-net`). Services resolve each other by container service name (e.g., `http://academic-api:8082`, `amqp://rabbitmq:5672`), ending hardcoded IP bindings.
+* **Deterministic Startup Order:** Use `depends_on` coupled with `condition: service_healthy` to ensure relational databases and brokers (PostgreSQL, Redis, RabbitMQ) pass health probes before dependent Spring Boot applications attempt database migrations or connection pool acquisitions.
+* **Stateful Isolation via Named Volumes:** Application containers must remain completely stateless and disposable. Persistent relational tables and message queues reside strictly within dedicated Docker named volumes (`identity_pg_data`, `rabbitmq_data`), preventing state loss during container recycling.
+
+### 5. Environment Promotion & 12-Factor Configuration Strategy (Session 2)
+* **Build Once, Promote Everywhere:** The identical container image artifact produced in CI runs across all environments (`develop` for disposable iteration, `qa` for integration/staging, and `main`/prod for live evaluation). Under no circumstances is a new image rebuilt specifically for production.
+* **Externalized Environment Configuration:** Adhere strictly to the 12-Factor App rule: configuration lives in the execution environment, never embedded in source code or baked into container images. No environment-specific branching (`if (env == "prod")`) in application logic.
+* **Eliminating Config Drift:** Maintain a comprehensive, sanitized `.env.example` in repository roots. Enforce fail-fast startup validation in Spring Boot and Compose configurations (`${VAR:?Error: Required}`) so missing configuration immediately prevents startup with actionable diagnostic messages.
