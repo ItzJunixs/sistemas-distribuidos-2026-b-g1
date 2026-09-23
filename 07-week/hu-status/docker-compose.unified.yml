@@ -1,0 +1,155 @@
+version: '3.8'
+
+networks:
+  edutrack-net:
+    name: edutrack-net
+    driver: bridge
+
+services:
+  # ==============================================================================
+  # BASES DE DATOS POSTGRESQL (PERSISTENCIA POLÍGLOTA POR CONTEXTO DELIMITADO)
+  # ==============================================================================
+  identity-db:
+    image: postgres:16-alpine
+    container_name: educk-identity-db
+    ports:
+      - "127.0.0.1:5431:5432"
+    environment:
+      POSTGRES_DB: identity_db
+      POSTGRES_USER: "${IDENTITY_POSTGRES_USER:?Error: User required}"
+      POSTGRES_PASSWORD: "${IDENTITY_POSTGRES_PASSWORD:?Error: Password required}"
+    volumes:
+      - identity_pg_data:/var/lib/postgresql/data
+    networks:
+      - edutrack-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d identity_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  academic-db:
+    image: postgres:16-alpine
+    container_name: educk-academic-db
+    ports:
+      - "127.0.0.1:5432:5432"
+    environment:
+      POSTGRES_DB: academic_db
+      POSTGRES_USER: "${ACADEMIC_POSTGRES_USER:?Error: User required}"
+      POSTGRES_PASSWORD: "${ACADEMIC_POSTGRES_PASSWORD:?Error: Password required}"
+    volumes:
+      - academic_pg_data:/var/lib/postgresql/data
+    networks:
+      - edutrack-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d academic_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  attendance-db:
+    image: postgres:16-alpine
+    container_name: educk-attendance-db
+    ports:
+      - "127.0.0.1:5433:5432"
+    environment:
+      POSTGRES_DB: attendance_db
+      POSTGRES_USER: "${ATTENDANCE_POSTGRES_USER:?Error: User required}"
+      POSTGRES_PASSWORD: "${ATTENDANCE_POSTGRES_PASSWORD:?Error: Password required}"
+    volumes:
+      - attendance_pg_data:/var/lib/postgresql/data
+    networks:
+      - edutrack-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d attendance_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  communication-db:
+    image: postgres:16-alpine
+    container_name: educk-communication-db
+    ports:
+      - "127.0.0.1:5434:5432"
+    environment:
+      POSTGRES_DB: communication_db
+      POSTGRES_USER: "${COMMUNICATION_POSTGRES_USER:?Error: User required}"
+      POSTGRES_PASSWORD: "${COMMUNICATION_POSTGRES_PASSWORD:?Error: Password required}"
+    volumes:
+      - communication_pg_data:/var/lib/postgresql/data
+    networks:
+      - edutrack-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d communication_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # ==============================================================================
+  # CACHE DISTRIBUIDA Y DEDUPLICACIÓN (REDIS)
+  # ==============================================================================
+  redis:
+    image: redis:7-alpine
+    container_name: educk-redis
+    ports:
+      - "127.0.0.1:6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - edutrack-net
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # ==============================================================================
+  # BROKER DE MENSAJERÍA ASÍNCRONA (RABBITMQ + MANAGEMENT UI)
+  # ==============================================================================
+  rabbitmq:
+    image: rabbitmq:3.13-management-alpine
+    container_name: educk-rabbitmq
+    ports:
+      - "127.0.0.1:5672:5672"      # Protocolo AMQP para microservicios y workers
+      - "127.0.0.1:15672:15672"    # Interfaz Web de Gestión (http://localhost:15672)
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - edutrack-net
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "check_running"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+    restart: unless-stopped
+
+  # ==============================================================================
+  # SERVIDOR MOCK PARA DESARROLLO AGIL DE FRONTEND (CELESTE DUSSÁN)
+  # Expone REST API con /usuarios, /asistencia, /notas, /circulares
+  # ==============================================================================
+  mock-server:
+    image: clue/json-server
+    container_name: educk-mock-server
+    ports:
+      - "3001:80"
+    volumes:
+      - ./mock_db.json:/data/db.json
+    networks:
+      - edutrack-net
+    restart: unless-stopped
+
+volumes:
+  identity_pg_data:
+  academic_pg_data:
+  attendance_pg_data:
+  communication_pg_data:
+  redis_data:
+  rabbitmq_data:
