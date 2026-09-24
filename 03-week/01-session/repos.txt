@@ -1,0 +1,51 @@
+==================================
+user-github : jdtovar07
+project: opti-view
+abbreviation: opti
+description:OptiView Patients is a microservice for managing patient records, optical prescriptions, visual history, periodic check-ups, and patient search in optical stores and visual-health centers.
+==================================
+user-github : julian1614
+project: medicine-inventory-system
+abbreviation: mis  
+description: System for managing and controlling the medicine inventory
+==================================
+user-github : contreras-elkin
+project: marketplace-agricultural-huila
+abbreviation: market-agri
+description: The system seeks to directly connect agricultural producers and buyers.
+==================================
+user-github : Oscarsl10
+project: cinesync-platform
+abbreviation: csp
+description: A microservices platform designed to manage movie catalogs, seat reservations, authentication, and digital ticketing.
+==================================
+user-github: sebastian080502
+project: distributed-reservation-platform
+abbreviation: drp
+description: microservices-based-distributed-reservation-platform
+==================================
+User-github: hermar55611
+Project-Name: futbolix
+Abbreviation: ftx
+Description: It is a system designed to manage football fields, allowing users to view available fields, check schedules, and manage reservations efficiently.
+==================================
+user-github : camilo28k
+project: OdontoSys
+abbreviation: ods
+description: OdontoSys is a distributed system for the comprehensive management of a dental practice, developed using a microservices-based architecture. The system enables the management of user authentication, patients, appointments, clinical information, and billing, while maintaining an independent database for each service.
+==================================
+user.git:XimenaChala
+Project:edutrack
+abbreviation:educk
+descripyion:eduTrack is a distributed platform for managing grades, attendance, and student academic progress
+==================================
+user-github : seamyong17
+project: by-sellens-platform
+abbreviation: bysellens
+description: Sales Management System for Makeup and Beauty Products
+==================================
+user-github: AsolanoT
+project: synkro-tech
+abbreviation: synkro
+description: Sales management system for technology products
+==================================
