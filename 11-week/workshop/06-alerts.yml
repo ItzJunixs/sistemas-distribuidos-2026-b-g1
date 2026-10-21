@@ -1,0 +1,69 @@
+# CP7 · Burn-rate alerts for SLO 1 (availability 99.5 % of place-order sagas, 30 days).
+# Error budget = 0.5 % → burn rate 14.4 means an error ratio of 14.4 × 0.005 = 0.072,
+# burn rate 6 means 6 × 0.005 = 0.03. Metric from the CP3 module / opti-workflow:
+# workflow_place_order_requests_total{outcome}. Bad outcomes: running, failed.
+groups:
+  - name: optiview-place-order-slo-recording
+    rules:
+      - record: optiview:place_order_error_ratio:rate5m
+        expr: |
+          sum(rate(workflow_place_order_requests_total{outcome=~"running|failed"}[5m]))
+          /
+          sum(rate(workflow_place_order_requests_total[5m]))
+      - record: optiview:place_order_error_ratio:rate30m
+        expr: |
+          sum(rate(workflow_place_order_requests_total{outcome=~"running|failed"}[30m]))
+          /
+          sum(rate(workflow_place_order_requests_total[30m]))
+      - record: optiview:place_order_error_ratio:rate1h
+        expr: |
+          sum(rate(workflow_place_order_requests_total{outcome=~"running|failed"}[1h]))
+          /
+          sum(rate(workflow_place_order_requests_total[1h]))
+      - record: optiview:place_order_error_ratio:rate6h
+        expr: |
+          sum(rate(workflow_place_order_requests_total{outcome=~"running|failed"}[6h]))
+          /
+          sum(rate(workflow_place_order_requests_total[6h]))
+
+  - name: optiview-place-order-slo-alerts
+    rules:
+      # Fast burn: 2 % of the 30-day budget in 1 hour. Confirmed by the last 5 minutes so it
+      # stops paging as soon as the saga recovers. Needs at least 3 sagas in the hour: with
+      # ~8 sagas/hour at peak, one single bad saga at 3 a.m. must not page anybody.
+      - alert: PlaceOrderFastBurn
+        expr: |
+          optiview:place_order_error_ratio:rate1h > (14.4 * 0.005)
+          and
+          optiview:place_order_error_ratio:rate5m > (14.4 * 0.005)
+          and
+          sum(increase(workflow_place_order_requests_total[1h])) >= 3
+        for: 2m
+        labels:
+          severity: page
+          team: the-illusionists
+          service: opti-workflow
+          slo: place-order-availability
+        annotations:
+          summary: "Place-order is burning its error budget 14.4x too fast (>7.2 % of sagas end RUNNING or FAILED)"
+          description: "Error ratio 1h = {{ $value | humanizePercentage }}. At this speed the 216-minute monthly budget is gone in about 2 days."
+          runbook_url: "https://github.com/ItzJunixs/sistemas-distribuidos-2026-b-g1/blob/main/11-week/workshop/07-runbook.md"
+
+      # Slow burn: 5 % of the 30-day budget in 6 hours, confirmed by the last 30 minutes.
+      - alert: PlaceOrderSlowBurn
+        expr: |
+          optiview:place_order_error_ratio:rate6h > (6 * 0.005)
+          and
+          optiview:place_order_error_ratio:rate30m > (6 * 0.005)
+          and
+          sum(increase(workflow_place_order_requests_total[6h])) >= 10
+        for: 15m
+        labels:
+          severity: ticket
+          team: the-illusionists
+          service: opti-workflow
+          slo: place-order-availability
+        annotations:
+          summary: "Place-order is burning its error budget 6x too fast (>3 % of sagas end RUNNING or FAILED)"
+          description: "Error ratio 6h = {{ $value | humanizePercentage }}. Look at it during working hours, before the 50 % budget policy is reached."
+          runbook_url: "https://github.com/ItzJunixs/sistemas-distribuidos-2026-b-g1/blob/main/11-week/workshop/07-runbook.md"
