@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -15,8 +16,8 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
 
 /**
- * Minimal opti-workflow: POST /api/v1/sagas/place-order behind the trace-context filter.
- * Only the saga entry point of the place-order journey, to show the instrumentation.
+ * Minimal opti-workflow: POST /api/v1/sagas/place-order behind the trace-context filter, step
+ * reserve-stock against opti-products-api, and GET /metrics for Prometheus.
  */
 public final class WorkflowServer {
 
@@ -24,11 +25,15 @@ public final class WorkflowServer {
 
     private final HttpServer server;
     private final StructuredLogger log;
+    private final StockHttpClient stock;
+    private final PlaceOrderMetrics metrics = new PlaceOrderMetrics();
 
-    public WorkflowServer(int port, StructuredLogger log) throws IOException {
+    public WorkflowServer(int port, String productsUrl, Duration timeout, StructuredLogger log) throws IOException {
         this.log = log;
+        this.stock = new StockHttpClient(productsUrl, timeout, log);
         this.server = HttpServer.create(new InetSocketAddress("127.0.0.1", port), 0);
         server.createContext("/api/v1/sagas/place-order", new TraceContextFilter(this::placeOrder, log));
+        server.createContext("/metrics", ex -> sendText(ex, metrics.render()));
     }
 
     public int port() { return server.getAddress().getPort(); }
@@ -52,7 +57,18 @@ public final class WorkflowServer {
         fields.put("product_id", m.group(1));
         fields.put("attempt", 1);
         log.info("saga.started", "place-order saga started", fields);
-        send(ex, 202, "{\"id\":\"" + sagaId + "\",\"type\":\"PLACE_ORDER\",\"status\":\"RUNNING\"}");
+        long started = System.nanoTime();
+
+        StockHttpClient.Result result = stock.reserveFrame(sagaId, m.group(1), 1);
+        String status;
+        int http;
+        switch (result) {
+            case RESERVED: status = "COMPLETED"; http = 201; break;
+            case INSUFFICIENT_STOCK: status = "COMPENSATED"; http = 201; break;
+            default: status = "RUNNING"; http = 202;
+        }
+        metrics.record(status.toLowerCase(), (System.nanoTime() - started) / 1e9);
+        send(ex, http, "{\"id\":\"" + sagaId + "\",\"type\":\"PLACE_ORDER\",\"status\":\"" + status + "\"}");
     }
 
     static String readBody(HttpExchange ex) throws IOException {
@@ -70,10 +86,21 @@ public final class WorkflowServer {
         }
     }
 
+    static void sendText(HttpExchange ex, String text) throws IOException {
+        byte[] body = text.getBytes(StandardCharsets.UTF_8);
+        ex.getResponseHeaders().set("Content-Type", "text/plain; version=0.0.4");
+        ex.sendResponseHeaders(200, body.length);
+        try (OutputStream out = ex.getResponseBody()) {
+            out.write(body);
+        }
+    }
+
     public static void main(String[] args) throws IOException {
         int port = Integer.parseInt(System.getenv().getOrDefault("PORT", "8085"));
         StructuredLogger log = StructuredLogger.fromEnv(System.out);
-        WorkflowServer app = new WorkflowServer(port, log);
+        String productsUrl = System.getenv().getOrDefault("PRODUCTS_URL", "http://127.0.0.1:8082");
+        Duration timeout = Duration.parse(System.getenv().getOrDefault("HTTP_TIMEOUT", "PT5S"));
+        WorkflowServer app = new WorkflowServer(port, productsUrl, timeout, log);
         app.start();
         log.info("app.started", "listening on http://127.0.0.1:" + app.port(), null);
     }
