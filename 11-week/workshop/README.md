@@ -9,7 +9,7 @@ the OptiView team project. Delivery 1 (in class): CP0 to CP5.
 - TEAM: The Illusionists (OptiView)
 - DOCS_REPO: https://github.com/code-corhuila/opti-docs
 - REFLECTION_DOC: (pending, link added when the document is shared)
-- JOURNEY: (written in CP1)
+- JOURNEY: Place order — opti-sales-portal → opti-api-gateway → opti-workflow (place-order saga) → opti-customers-api → opti-products-api → opti-sales-api
 <!-- CONFIG-END -->
 
 ## Files
@@ -17,7 +17,7 @@ the OptiView team project. Delivery 1 (in class): CP0 to CP5.
 | Checkpoint | File | Status |
 |---|---|---|
 | CP0 | `README.md` | done |
-| CP1 | `01-journey.md` | pending |
+| CP1 | `01-journey.md` | done |
 | CP2 | `02-log-contract.md` | pending |
 | CP3 | `03-instrumentation/` | pending |
 | CP4 | `04-metrics.md` | pending |
