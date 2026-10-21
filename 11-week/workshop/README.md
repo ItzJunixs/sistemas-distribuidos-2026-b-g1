@@ -8,7 +8,7 @@ the OptiView team project. Delivery 1 (in class): CP0 to CP5.
 - GITHUB_USER: ItzJunixs
 - TEAM: The Illusionists (OptiView)
 - DOCS_REPO: https://github.com/code-corhuila/opti-docs
-- REFLECTION_DOC: (pending, link added when the document is shared)
+- REFLECTION_DOC: https://docs.google.com/document/d/1piElyduzq9OOpbU12C2G4yJlekreHvkF-RYC9hncmeM/edit?usp=sharing
 - JOURNEY: Place order — opti-sales-portal → opti-api-gateway → opti-workflow (place-order saga) → opti-customers-api → opti-products-api → opti-sales-api
 <!-- CONFIG-END -->
 
