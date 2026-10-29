@@ -30,7 +30,8 @@ inside `optiview-net`). Data crossing it: patient identity and contact PII, opti
 | CP1 | `01-attack-surface.md` | done |
 | CP2 | opti-docs `05-architecture/security/stride-ItzJunixs.md` (PR, open for review) | done |
 | CP3 | opti-docs issues #33, #34, #35 | done |
-| CP4 | `04-security-ci/` | pending |
+| CP4 | `04-security-ci/` | done |
+| CP5 | `../hu-status/README.md` + peer review | done |
 
 ## Submission links
 
