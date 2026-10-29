@@ -11,7 +11,7 @@ team project. Delivery 1 (in class): CP0 to CP5. Delivery 2 (home): CP6 to CP9.
 - BOUNDARY: TB2 — api-gateway → ms-pacientes (repo opti-customers-api), inbound direction
 - CLAIM_ISSUE: https://github.com/code-corhuila/opti-docs/issues/36
 - REFLECTION_DOC: https://docs.google.com/document/d/1NNn4eS46S0TIawrHL2fVm6KZ-PpZ_lW3PbhvTaffXK0/edit?usp=sharing
-- LIBRARY_BOOK: Tanenbaum, A. S., & Van Steen, M. Sistemas distribuidos: principios y paradigmas (2.ª ed.). Pearson Educación, 2008. Call number: <signatura>. Chapter 9 "Seguridad" (9.1.1, 9.2, 9.3), pp. <__>
+- LIBRARY_BOOK: Tanenbaum, A. S., & Van Steen, M. Sistemas distribuidos: principios y paradigmas (2.ª ed.). Pearson Educación, 2008. ISBN 978-970-26-1280-3. Call number 005.4476 T15d, copy 2 (CORHUILA library, Prado Alto). Chapter 9 "Seguridad": pp. 378-380, 396-397, 414, 428
 - LIBRARY_RECORD_TIME: <hh:mm of the library record>
 - STORIES: https://github.com/code-corhuila/opti-docs/issues/33, https://github.com/code-corhuila/opti-docs/issues/34, https://github.com/code-corhuila/opti-docs/issues/35
 <!-- CONFIG-END -->
