@@ -11,9 +11,9 @@ team project. Delivery 1 (in class): CP0 to CP5. Delivery 2 (home): CP6 to CP9.
 - BOUNDARY: TB2 — api-gateway → ms-pacientes (repo opti-customers-api), inbound direction
 - CLAIM_ISSUE: https://github.com/code-corhuila/opti-docs/issues/36
 - REFLECTION_DOC: https://docs.google.com/document/d/1NNn4eS46S0TIawrHL2fVm6KZ-PpZ_lW3PbhvTaffXK0/edit?usp=sharing
-- LIBRARY_BOOK: <author, title, edition, year, call number, pages used>
+- LIBRARY_BOOK: Tanenbaum, A. S., & Van Steen, M. Sistemas distribuidos: principios y paradigmas (2.ª ed.). Pearson Educación, 2008. Call number: <signatura>. Chapter 9 "Seguridad" (9.1.1, 9.2, 9.3), pp. <__>
 - LIBRARY_RECORD_TIME: <hh:mm of the library record>
-- STORIES: <three issue URLs, added in CP3>
+- STORIES: https://github.com/code-corhuila/opti-docs/issues/33, https://github.com/code-corhuila/opti-docs/issues/34, https://github.com/code-corhuila/opti-docs/issues/35
 <!-- CONFIG-END -->
 
 ## Boundary claimed
@@ -27,9 +27,9 @@ inside `optiview-net`). Data crossing it: patient identity and contact PII, opti
 | Checkpoint | File | Status |
 |---|---|---|
 | CP0 | `README.md` | done |
-| CP1 | `01-attack-surface.md` | in progress |
-| CP2 | opti-docs `05-architecture/security/stride-ItzJunixs.md` (PR) | pending |
-| CP3 | three `[security]` issues in opti-docs | pending |
+| CP1 | `01-attack-surface.md` | done |
+| CP2 | opti-docs `05-architecture/security/stride-ItzJunixs.md` (PR, open for review) | done |
+| CP3 | opti-docs issues #33, #34, #35 | done |
 | CP4 | `04-security-ci/` | pending |
 
 ## Submission links
