@@ -81,7 +81,7 @@ class PatientFormulasAuthorizationTest {
         return """
                 {"od":{"sphere":-2.0,"cylinder":-0.5,"axis":180},"oi":{"sphere":-1.75},
                  "pupillaryDistance":63.0,"lensType":"MONOFOCAL","optometristName":"Ana Torres",
-                 "formulaDate":"2026-10-01"}""";
+                 "formulaDate":"2026-09-20"}""";
     }
 
     private static String idOf(String json) {
