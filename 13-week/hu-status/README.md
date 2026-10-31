@@ -8,7 +8,7 @@
 - FULL_NAME: Juan Diego Jiménez Horta
 - GITHUB_USER: ItzJunixs
 - TEAM: The Illusionists
-- SPRINT_GOAL: Threat model the api-gateway → ms-pacientes boundary of OptiView (attack surface, STRIDE PR, security backlog and security gates in CI) in the week 13 workshop, delivery 1.
+- SPRINT_GOAL: Threat model the api-gateway → ms-pacientes boundary of OptiView (attack surface, STRIDE PR, security backlog and security gates in CI) in the week 13 workshop, delivery 1, then answer the review, refine the stories, run the negative test and plan the implementation (delivery 2).
 <!-- CONFIG-END -->
 
 ## 1. User stories worked this week
@@ -20,6 +20,10 @@
 | W13-CP3 | Security backlog: three stories on the team board | done | https://github.com/code-corhuila/opti-docs/issues/33 · https://github.com/code-corhuila/opti-docs/issues/34 · https://github.com/code-corhuila/opti-docs/issues/35 · https://github.com/ItzJunixs/sistemas-distribuidos-2026-b-g1/commit/28377d7 |
 | W13-CP4 | Security gates workflow and negative authorization test | done | https://github.com/ItzJunixs/sistemas-distribuidos-2026-b-g1/commit/74c2d8c · https://github.com/ItzJunixs/sistemas-distribuidos-2026-b-g1/commit/328a6cb |
 | W13-CP5 | Peer review of @BackSua STRIDE (opti-api-gateway → opti-products-api); no PR open yet, so the comment is on claim issue #30 | done | https://github.com/code-corhuila/opti-docs/issues/30#issuecomment-6484965822 |
+| W13-CP6 | Answer peer review on STRIDE (@BackSua, @julianvargasb), rows S and E split in two steps | done | https://github.com/code-corhuila/opti-docs/commit/a80ae4b (follow-up PR on security/stride-ItzJunixs) |
+| W13-CP7 | Refine security stories #33, #34, #35 | done | https://github.com/ItzJunixs/sistemas-distribuidos-2026-b-g1/commit/236f1d5 |
+| W13-CP8 | Run negative authorization test (red: 403 expected, 200 actual) and validate workflow | done | https://github.com/ItzJunixs/sistemas-distribuidos-2026-b-g1/commit/75c12a7 |
+| W13-CP9 | Implementation plan and close workshop | done | reflection doc |
 
 ## 2. My individual contribution
 - Mapped the OptiView data flow with five trust boundaries and claimed TB2b (api-gateway → ms-pacientes).
@@ -28,13 +32,13 @@
 - Proposed `security.yml` (gitleaks, OWASP dependency-check, negative authz test) and `PatientFormulasAuthorizationTest` for opti-customers-api.
 
 ## 3. Blockers and risks
-- The negative authorization test is red on purpose until #33 is implemented in opti-customers-api.
+- The negative authorization test is red on purpose until #33 is implemented in opti-customers-api; real run on 2026-10-30 confirmed 200 instead of 403.
 - Docs (`07-api/authentication.md`) and code disagree on where the JWT is validated; the team has to decide.
 
 ## 4. Plan for next week
-- Answer the review on my STRIDE PR, finish residual risk and references (CP6).
-- Refine the three stories (CP7) and run the negative test with real output (CP8).
-- Write the implementation plan (CP9).
+- Propose to the team the fix for #33: `requireRole` on the three GET endpoints of `PatientController`, so `PatientFormulasAuthorizationTest` turns green.
+- Ask the owner of opti-auth-api for `aud` and `patientId` claims in `Rs256TokenIssuer` (#34, second step of #33).
+- Clear client `X-User-*` headers in the gateway (#35).
 
 ## 5. Compliance self-check
 - [x] Conventional Commits - `type(scope): summary`
