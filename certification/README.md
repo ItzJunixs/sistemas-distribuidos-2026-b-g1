@@ -20,7 +20,7 @@
 
 | Date | Hours | Chapters or labs | Evidence file |
 |---|---|---|---|
-| <YYYY-MM-DD> | <h> | <Chapters or labs> | <evidence/NN-....png> |
+| 2026-11-01 | 3 | Pre-class guidance, Chapter 1 | evidence/01-chapter-01.png |
 | Total | <sum> | | |
 
 ## Labs
