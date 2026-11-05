@@ -22,7 +22,8 @@
 |---|---|---|---|
 | 2026-11-01 | 3 | Pre-class guidance, Chapter 1 | evidence/01-chapter-01.png |
 | 2026-11-02 | 2 | Chapters 2 and 3 | evidence/02-chapter-02.png, evidence/03-chapter-03.png |
-| Total | 5 | | |
+| 2026-11-04 | 5 | Chapters 4 and 5 | evidence/04-chapter-04.png, evidence/05-chapter-05.png |
+| Total | 10 | | |
 
 ## Labs
 
