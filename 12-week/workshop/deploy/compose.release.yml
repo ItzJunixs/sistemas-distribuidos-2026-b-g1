@@ -1,0 +1,57 @@
+# Release override for opti-infra: run the images CI already built, never build on the host.
+#
+#   cd opti-infra
+#   export OPTI_VERSION=v3.0.0            # or sha-4bd4ffc, qa, develop
+#   docker compose --env-file .env -f compose.yml -f <this file> pull
+#   docker compose --env-file .env -f compose.yml -f <this file> up -d --no-build
+#
+# Same composition, same .env per environment: only the image source changes (rules P1-P5 of
+# 02-deployment-plan.md). Third-party images (postgres, flyway, redis, observability) are already
+# pinned in their own compose files and are not touched here.
+#
+# The *-db-migrate jobs keep mounting the SQL of the sibling -db repos, so check those repos out
+# at the same tag before migrating.
+
+x-release: &release
+  pull_policy: always
+
+services:
+  api-gateway:
+    <<: *release
+    image: ghcr.io/code-corhuila/opti-api-gateway:${OPTI_VERSION:?set OPTI_VERSION}
+  front:
+    <<: *release
+    image: ghcr.io/code-corhuila/opti-front:${OPTI_VERSION:?set OPTI_VERSION}
+
+  auth-api:
+    <<: *release
+    image: ghcr.io/code-corhuila/opti-auth-api:${OPTI_VERSION:?set OPTI_VERSION}
+  customers-api:
+    <<: *release
+    image: ghcr.io/code-corhuila/opti-customers-api:${OPTI_VERSION:?set OPTI_VERSION}
+  products-api:
+    <<: *release
+    image: ghcr.io/code-corhuila/opti-products-api:${OPTI_VERSION:?set OPTI_VERSION}
+  sales-api:
+    <<: *release
+    image: ghcr.io/code-corhuila/opti-sales-api:${OPTI_VERSION:?set OPTI_VERSION}
+
+  worker:
+    <<: *release
+    image: ghcr.io/code-corhuila/opti-worker:${OPTI_VERSION:?set OPTI_VERSION}
+  workflow:
+    <<: *release
+    image: ghcr.io/code-corhuila/opti-workflow:${OPTI_VERSION:?set OPTI_VERSION}
+
+  auth-portal:
+    <<: *release
+    image: ghcr.io/code-corhuila/opti-auth-portal:${OPTI_VERSION:?set OPTI_VERSION}
+  customers-portal:
+    <<: *release
+    image: ghcr.io/code-corhuila/opti-customers-portal:${OPTI_VERSION:?set OPTI_VERSION}
+  products-portal:
+    <<: *release
+    image: ghcr.io/code-corhuila/opti-products-portal:${OPTI_VERSION:?set OPTI_VERSION}
+  sales-portal:
+    <<: *release
+    image: ghcr.io/code-corhuila/opti-sales-portal:${OPTI_VERSION:?set OPTI_VERSION}

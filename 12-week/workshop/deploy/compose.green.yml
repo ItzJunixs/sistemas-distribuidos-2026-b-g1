@@ -1,0 +1,19 @@
+# Green instance of customers-api for a blue-green deploy (used by blue-green.sh).
+# Same database, same secrets and same network as blue (customers-api in
+# opti-customers-api/deploy/compose.yml); only the image and the name change.
+#
+#   GREEN_IMAGE=ghcr.io/code-corhuila/opti-customers-api:sha-4bd4ffc   (default: the local blue image)
+
+services:
+  customers-api-green:
+    image: ${GREEN_IMAGE:-opti/customers-api:local}
+    environment:
+      DATABASE_URL: jdbc:postgresql://customers-db:5432/${CUSTOMERS_DB_NAME:-customers}
+      DATABASE_USER: ${CUSTOMERS_DB_USER:-customers_owner}
+      DATABASE_PASSWORD: ${CUSTOMERS_DB_PASSWORD:?set CUSTOMERS_DB_PASSWORD in .env}
+      JWT_PUBLIC_KEY: ${JWT_PUBLIC_KEY:?set JWT_PUBLIC_KEY (public key of the identity service)}
+    networks:
+      - platform
+    expose:
+      - "8080"
+    restart: unless-stopped

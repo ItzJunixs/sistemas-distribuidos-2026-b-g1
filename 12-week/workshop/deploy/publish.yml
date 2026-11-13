@@ -1,0 +1,81 @@
+# Proposal for .github/workflows/publish.yml in every executable opti-* repo (stories DEP-01, DEP-02).
+# Replaces the current one, which only pushes :latest on push to develop.
+#
+#   push to develop  -> BUILD once: :sha-<7>, :develop  (+ OCI labels with the commit)
+#   push to qa/main  -> PROMOTE: retag the :sha-<7> of that commit as :qa / :main (no build)
+#   push of tag v*   -> RELEASE: retag the :sha-<7> of the tagged commit as :vX.Y.Z (no build)
+#
+# Promotion works because merges to qa/main are merge commits of PRs whose head is already on
+# develop; the job looks for the image of the second parent when the commit itself has none.
+name: Publish image
+
+on:
+  push:
+    branches: [develop, qa, main]
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+env:
+  IMAGE: ghcr.io/${{ github.repository }}
+
+jobs:
+  build:
+    if: github.ref == 'refs/heads/develop'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.IMAGE }}
+          tags: |
+            type=sha,prefix=sha-,format=short
+            type=raw,value=develop
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: deploy/Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}   # includes org.opencontainers.image.revision
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  promote:
+    if: github.ref != 'refs/heads/develop'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Find the image already built for this commit (never rebuild)
+        id: src
+        run: |
+          for sha in "$(git rev-parse --short=7 HEAD)" "$(git rev-parse --short=7 HEAD^2 2>/dev/null || true)"; do
+            [ -n "$sha" ] || continue
+            if docker buildx imagetools inspect "$IMAGE:sha-$sha" >/dev/null 2>&1; then
+              echo "ref=$IMAGE:sha-$sha" >> "$GITHUB_OUTPUT"; exit 0
+            fi
+          done
+          echo "::error::no sha-* image for $(git rev-parse --short=7 HEAD): it never passed through develop"; exit 1
+      - name: Retag (same digest)
+        run: docker buildx imagetools create -t "$IMAGE:${GITHUB_REF_NAME}" "${{ steps.src.outputs.ref }}"
+      - name: Show the digest that was promoted
+        run: docker buildx imagetools inspect "$IMAGE:${GITHUB_REF_NAME}" | head -3
