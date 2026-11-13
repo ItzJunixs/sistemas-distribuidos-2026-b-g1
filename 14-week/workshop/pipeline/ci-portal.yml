@@ -1,0 +1,50 @@
+# Proposal for .github/workflows/ci.yml of opti-front and the four portals.
+# Keeps today's job name (build-and-test) so the required check does not change, and adds the
+# missing gates: lint, coverage thresholds, dependency audit, no TODO.
+name: CI
+
+on:
+  pull_request:
+    branches: [develop, qa, main]
+    paths-ignore: ['**.md']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '22', cache: npm }
+      - run: npm ci
+      - name: Lint (warnings fail too)
+        run: npx eslint . --max-warnings 0
+      - name: Types (strict, no emit)
+        run: npm run typecheck
+      - name: Unit tests with coverage thresholds (vitest.config.ts → test.coverage.thresholds)
+        run: npx vitest run --coverage
+      - name: Build
+        run: npm run build
+      - name: No TODO/FIXME without an issue
+        run: ./.github/scripts/no-todo.sh src
+
+  security:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - uses: actions/setup-node@v4
+        with: { node-version: '22', cache: npm }
+      - name: Known vulnerabilities in production dependencies
+        run: npm audit --omit=dev --audit-level=high
+      - name: Secrets in the history
+        run: docker run --rm -v "$PWD:/repo" zricethezav/gitleaks:v8.21.2 detect --source /repo --redact --no-banner

@@ -1,0 +1,78 @@
+# Proposal for opti-infra/.github/workflows/release-smoke.yml (story CI-07).
+# Starts the whole composed platform from the sibling repos at one ref, migrates it and checks
+# that it really answers. Required check on qa and main of opti-infra; also run by hand before
+# tagging v3.0.0 (workflow_dispatch with ref=release/3.0.0 or v3.0.0).
+name: release-smoke
+
+on:
+  pull_request:
+    branches: [qa, main]
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: branch or tag to check out in every sibling repo
+        default: develop
+
+permissions:
+  contents: read
+
+jobs:
+  release-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      REF: ${{ inputs.ref || github.base_ref }}
+      DEMO_PASSWORD: ${{ secrets.DEMO_PASSWORD || 'OptiView2026' }}   # demo users of opti-auth-db (develop seed)
+    steps:
+      - uses: actions/checkout@v4
+        with: { path: opti-infra }
+      - name: Clone the 16 siblings at the same ref
+        run: |
+          for r in api-gateway front worker workflow \
+                   auth-db auth-api auth-portal customers-db customers-api customers-portal \
+                   products-db products-api products-portal sales-db sales-api sales-portal; do
+            # Repos without changes in a release have no release/* branch: fall back to main and say so.
+            git clone -q --depth 1 --branch "$REF" "https://github.com/code-corhuila/opti-$r" "opti-$r" 2>/dev/null \
+              || { echo "::warning::opti-$r has no $REF, using main"; git clone -q --depth 1 --branch main "https://github.com/code-corhuila/opti-$r" "opti-$r"; }
+            echo "opti-$r @ $(git -C "opti-$r" rev-parse --short HEAD)"
+          done
+      - name: Environment with throw-away secrets (develop profile, demo data)
+        working-directory: opti-infra
+        run: |
+          cp env/.env.develop.example .env
+          ./scripts/dev-keys.sh
+          sed -i 's/^GRAFANA_ADMIN_PASSWORD=.*/GRAFANA_ADMIN_PASSWORD=ci-only/' .env
+      - name: Start the platform
+        working-directory: opti-infra
+        run: ./scripts/up.sh
+      - name: Migrate the four databases
+        working-directory: opti-infra
+        run: |
+          for d in auth customers products sales; do
+            docker compose --env-file .env -f compose.yml run --rm "$d-db-migrate"
+          done
+      - name: Every service with a healthcheck becomes healthy
+        working-directory: opti-infra
+        run: |
+          for _ in $(seq 1 60); do
+            bad=$(docker compose --env-file .env -f compose.yml ps --format '{{.Service}} {{.Health}}' | awk '$2!="" && $2!="healthy"')
+            [ -z "$bad" ] && { echo "all healthy"; exit 0; }
+            sleep 5
+          done
+          echo "not healthy after 5 min:"; echo "$bad"; exit 1
+      - name: Smoke through the gateway (health, login, authenticated read)
+        run: |
+          set -euo pipefail
+          GW=http://localhost:8000
+          test "$(curl -s -o /dev/null -w '%{http_code}' $GW/health)" = 200
+          token=$(curl -sf -X POST $GW/api/v1/auth/login -H 'Content-Type: application/json' \
+                    -d "{\"username\":\"admin\",\"password\":\"$DEMO_PASSWORD\"}" | jq -r .accessToken)
+          test -n "$token" && test "$token" != null
+          for path in /api/v1/patients /api/v1/frames; do
+            code=$(curl -s -o /dev/null -w '%{http_code}' -H "Authorization: Bearer $token" "$GW$path")
+            echo "GET $path -> $code"; test "$code" = 200
+          done
+      - name: Logs on failure
+        if: failure()
+        working-directory: opti-infra
+        run: docker compose --env-file .env -f compose.yml logs --tail 80 api-gateway auth-api customers-api products-api
