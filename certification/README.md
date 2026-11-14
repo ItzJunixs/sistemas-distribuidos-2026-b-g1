@@ -1,20 +1,18 @@
-# Certification C3 — <Full name>
-
-> Template of the corte 3 certification. Replace every `<...>` with your data and delete this note. The rules are in the guide attached to the c3-certification activity in Moodle. Text left as `<...>` counts as missing.
+# Certification C3 — JUAN DIEGO JIMENEZ HORTA
 
 ## Cover
 
 | Field | Value |
 |---|---|
-| Full name | <Full name exactly as in Moodle> |
-| GitHub user | <github-user> |
-| Group | <G1 or G2> |
-| Team | <Team name> |
-| Team -docs repository | <https://github.com/code-corhuila/...-docs> |
-| Course | <Exact course name> |
-| Course link | <Course URL> |
-| Start date | <YYYY-MM-DD> |
-| Completion date | <YYYY-MM-DD> |
+| Full name | JUAN DIEGO JIMENEZ HORTA |
+| GitHub user | ItzJunixs |
+| Group | G1 |
+| Team | OptiView |
+| Team -docs repository | https://github.com/code-corhuila/opti-docs |
+| Course | HCCDP-Solution Architectures Course |
+| Course link | https://e.huawei.com/en/talent/ict-academy/#/ict-courses-detail?courseId=6WtKiPd1S1YelBB0AUbE1vXlPgk |
+| Start date | 2026-10-31 |
+| Completion date | 2026-11-14 |
 
 ## Study log
 
@@ -44,4 +42,9 @@ I could not complete the online labs. The lab environment redirects to the Huawe
 
 ## Skills summary
 
-<5 to 7 lines in English, first person, naming at least three concrete design techniques from the course.>
+I learned how to design distributed architectures using independent microservices and clear business boundaries.
+I understood how horizontal scaling distributes workloads across multiple application instances.
+I learned how the Saga pattern coordinates operations between services through compensation and idempotency.
+I studied disaster recovery strategies using primary-standby replication, RTO, and RPO.
+I understood how container orchestration and availability zones can improve application reliability.
+I learned how continuous integration and automated deployment help deliver software changes more consistently.
