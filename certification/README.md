@@ -27,21 +27,17 @@
 | 2026-11-08 | 2 | Chapter 10 | evidence/10-chapter-10.png |
 | 2026-11-10 | 5 | Chapter 11 | evidence/11-chapter-11.png |
 | 2026-11-12 | 6 | Chapters 12 and 13 | evidence/12-chapter-12.png, evidence/13-chapter-13.png |
-| Total | 29 | | |
+| 2026-11-13 | 6 | Chapter 14, review of chapters 1 to 14, final exam | evidence/14-chapter-14.png, evidence/19-final-exam.png |
+| Total | 35 | | |
 
 ## Labs
 
-| Evidence file | Lab name | What I built | What failed first and how I fixed it |
-|---|---|---|---|
-| evidence/15-lab-1.png | <Lab name> | <One sentence> | <One sentence> |
-| evidence/16-lab-2.png | <Lab name> | <One sentence> | <One sentence> |
-| evidence/17-lab-3.png | <Lab name> | <One sentence> | <One sentence> |
-| evidence/18-lab-4.png | <Lab name> | <One sentence> | <One sentence> |
+I could not complete the online labs. The lab environment redirects to the Huawei Cloud login page (auth.huaweicloud.com), and it rejects the same account I use for the course with "Incorrect ID or password". I reported the problem to the teacher through Moodle with a screenshot of the error. Instead of the labs, I spent extra time reviewing chapters 1 to 14 before the final exam.
 
 ## Final exam
 
-- Score: <score>
-- Date: <YYYY-MM-DD>
+- Score: 75/100 (Passed)
+- Date: 2026-11-13
 - Evidence: evidence/19-final-exam.png
 
 ## Skills summary
