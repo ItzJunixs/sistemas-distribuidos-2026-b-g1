@@ -39,9 +39,8 @@ I could not complete the online labs. The lab environment redirects to the Huawe
 - Score: 75/100 (Passed)
 - Date: 2026-11-13
 - Evidence: evidence/19-final-exam.png
-- Exam report with the exam date: evidence/examen_final_reporte.png (the platform shows the date in UTC+8, so it appears as 2026-11-14)
-- Certificate: evidence/certificate.png. The platform downloads the certificate as a PNG file, not as a PDF. It prints my account ID (hid_8xh114cv5fte_jg) instead of my name, although my profile has my full name, JUAN DIEGO JIMENEZ HORTA, and my institutional e-mail (evidence/mi_informacion_huawei.png).
-- Online labs login error: evidence/error_online_labs.png
+- Certificate: certificate.pdf. The platform downloads the certificate as a PNG image, so I saved that same image as a PDF without changing it. The certificate prints my account ID (hid_8xh114cv5fte_jg) instead of my name, although my Huawei profile has my full name, JUAN DIEGO JIMENEZ HORTA, and my institutional e-mail.
+- The guide does not allow extra files inside certification/, so I did not upload the screenshots of my Huawei profile, the full exam report or the online labs login error. I sent them to the teacher through Moodle.
 
 ## Skills summary
 
